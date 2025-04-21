@@ -1,0 +1,131 @@
+.boardWrapper {
+  position: relative;
+  width: 100%; /* Chiều rộng đầy đủ của mainContent */
+  height: 100%; /* Chiều cao đầy đủ của mainContent */
+  display: flex;
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden; /* Ngăn nội dung tràn ra ngoài */
+}
+
+.board {
+  display: grid;
+  grid-template-rows: repeat(8, 1fr); /* 8 hàng */
+  grid-template-columns: repeat(12, minmax(40px, 1fr)); /* 12 cột với chiều rộng tối thiểu là 40px */
+  width: 100%; /* Chiều rộng đầy đủ của boardWrapper */
+  max-width: 100%; /* Không vượt quá chiều rộng của container */
+  min-width: 780px; /* Đảm bảo bàn cờ không nhỏ hơn 780px */
+  height: auto; /* Chiều cao tự động dựa trên nội dung */
+  gap: 4px; /* Khoảng cách giữa các ô */
+  box-sizing: border-box;
+}
+
+/* Góc trên bên trái */
+.topLeftCorner {
+  grid-row: 1;
+  grid-column: 1 / span 1; /* Chiếm 1 cột */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  text-align: center;
+  background-color: #f9c74f;
+  border: 2px solid #333;
+  box-sizing: border-box;
+}
+
+/* Góc trên bên phải */
+.topRightCorner {
+  grid-row: 1;
+  grid-column: 12 / span 1; /* Chiếm 1 cột */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  text-align: center;
+  background-color: #90be6d;
+  border: 2px solid #333;
+  box-sizing: border-box;
+}
+
+/* Góc dưới bên trái */
+.bottomLeftCorner {
+  grid-row: 8;
+  grid-column: 1 / span 1; /* Chiếm 1 cột */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  text-align: center;
+  background-color: #f94144;
+  border: 2px solid #333;
+  box-sizing: border-box;
+}
+
+/* Góc dưới bên phải */
+.bottomRightCorner {
+  grid-row: 8;
+  grid-column: 12 / span 1; /* Chiếm 1 cột */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  text-align: center;
+  background-color: #577590;
+  border: 2px solid #333;
+  box-sizing: border-box;
+}
+
+/* Khu vực trung tâm */
+.centerArea {
+  grid-row: 2 / span 6;
+  grid-column: 2 / span 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  box-sizing: border-box;
+  position: relative; /* Để định vị các phần tử con bên trong */
+}
+
+.avatarPathWrapper {
+  position: absolute;
+  inset: 0; /* Đường đi chiếm toàn bộ không gian của centerArea */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none; /* Ngăn người dùng tương tác với đường đi */
+}
+
+/* Thẻ Cơ Hội */
+.chanceCard {
+  width: 12%;
+  aspect-ratio: 1 / 1;
+  background-color: #f9c74f;
+  border: 2px solid #333;
+  border-radius: 8px;
+}
+
+/* Vị trí của xúc sắc */
+.diceArea {
+  width: 12%;
+  aspect-ratio: 1 / 1;
+  background-color: #90be6d;
+  border: 2px solid #333;
+  border-radius: 8px;
+}
+
+/* Thẻ Vận Khí */
+.communityChest {
+  width: 12%;
+  aspect-ratio: 1 / 1;
+  background-color: #f94144;
+  border: 2px solid #333;
+  border-radius: 8px;
+}
+

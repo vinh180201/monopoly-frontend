@@ -1,0 +1,27 @@
+.appContainer {
+  display: flex;
+  height: 100vh; /* Chiều cao toàn màn hình */
+  width: 100vw; /* Chiều rộng toàn màn hình */
+  overflow: hidden; /* Ngăn nội dung tràn ra ngoài */
+  background-color: #f0f2f5;
+}
+
+.mainContent {
+  flex: 1; /* Chiếm toàn bộ không gian còn lại */
+  display: flex;
+  justify-content: center; /* Căn giữa nội dung theo chiều ngang */
+  align-items: center; /* Căn giữa nội dung theo chiều dọc */
+  padding: 0; /* Loại bỏ padding */
+  overflow: hidden; /* Ngăn nội dung tràn ra ngoài */
+}
+
+.sidebar {
+  width: 300px; /* Chiều rộng cố định của sidebar */
+  background-color: #ffffff;
+  border-left: 1px solid #d9d9d9;
+  padding: 16px;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

@@ -1,0 +1,146 @@
+.cell {
+  flex: 1 1 auto; /* Tự động điều chỉnh kích thước */
+  min-width: 40px; /* Chiều rộng tối thiểu */
+  max-width: 100px; /* Chiều rộng tối đa */
+  min-height: 40px; /* Chiều cao tối thiểu */
+  max-height: 100px; /* Chiều cao tối đa */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Căn chỉnh các phần tử theo chiều dọc */
+  align-items: center;
+  background-color: #f9f9f9;
+  padding: 0.3em;
+  font-size: clamp(0.4rem, 0.8vw, 0.9rem); /* Kích thước chữ thay đổi linh hoạt */
+  text-align: center;
+  box-sizing: border-box;
+  border: 1px solid #000;
+  transition: all 0.3s ease;
+}
+
+.cell:hover {
+  background-color: #e0e0e0;
+}
+
+/* Biểu diễn màu đất */
+.colorBar {
+  width: 100%;
+  height: 10px;
+  background-color: currentColor; /* Màu sắc dựa trên class của ô đất */
+  border-radius: 2px;
+}
+
+/* Biểu diễn nhà */
+.houses {
+  display: flex;
+  gap: 2px;
+  margin-top: 4px;
+}
+
+.house {
+  width: 10px;
+  height: 10px;
+  background-color: #4caf50; /* Màu xanh lá cho nhà */
+  border: 1px solid #000;
+  border-radius: 2px;
+}
+
+/* Tên ô đất và tiền */
+.details {
+  text-align: center;
+  margin-top: 5px;
+}
+
+.name {
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.price {
+  font-size: 0.8rem;
+  color: #555;
+}
+
+/* User icons */
+.users {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  margin-top: 5px;
+}
+
+.avatar {
+  width: 20px;
+  height: 20px;
+  font-size: 0.8rem;
+  border: 2px solid #000;
+  border-radius: 50%;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Responsive for mobile */
+@media screen and (max-width: 768px) {
+  .cell {
+    min-width: 50px; /* Giảm chiều rộng tối thiểu trên màn hình nhỏ */
+    font-size: 0.6rem; /* Giảm kích thước chữ */
+  }
+}
+
+/* Color variations based on the 'color' prop */
+.red {
+  background-color: #f44336;
+  color: white;
+}
+
+.blue {
+  background-color: #2196f3;
+  color: white;
+}
+
+.green {
+  background-color: #4caf50;
+  color: white;
+}
+
+.yellow {
+  background-color: #ffeb3b;
+  color: black;
+}
+
+.purple {
+  background-color: #9c27b0;
+  color: white;
+}
+
+.orange {
+  background-color: #ff9800;
+  color: white;
+}
+
+.lightblue {
+  background-color: #03a9f4;
+  color: white;
+}
+
+.pink {
+  background-color: #e91e63;
+  color: white;
+}
+
+.black {
+  background-color: #000000;
+  color: white;
+}
+
+.white {
+  background-color: #ffffff;
+  color: black;
+}
+
+.gray {
+  background-color: #9e9e9e;
+  color: white;
+}
