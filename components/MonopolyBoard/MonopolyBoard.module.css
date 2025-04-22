@@ -9,6 +9,7 @@
   box-sizing: border-box;
   overflow: hidden; /* Ngăn nội dung tràn ra ngoài */
   padding: 20px;
+  overflow: auto;
 }
 
 .board {

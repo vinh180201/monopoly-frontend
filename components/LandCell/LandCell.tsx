@@ -1,10 +1,14 @@
-import { LandCellData } from '@/types/landCell';
-import styles from './LandCell.module.css';
-import React from 'react';
-import StartCell from '../CornerCell/StartCell';
-import JailCell from '../CornerCell/JailCell';
-import GoJailCell from '../CornerCell/GoJailCell';
-import ParkingCell from '../CornerCell/ParkingCell';
+import { LandCellData } from "@/types/landCell";
+import styles from "./LandCell.module.css";
+import React, { useState } from "react";
+import StartCell from "../CornerCell/StartCell";
+import JailCell from "../CornerCell/JailCell";
+import GoJailCell from "../CornerCell/GoJailCell";
+import ParkingCell from "../CornerCell/ParkingCell";
+import LandInfoModal from "../LandInfoModal/LandInfoModal";
+import { selectCurrentPlayer, updatePlayerMoney } from "@/redux/features/playerSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addHouseToLand } from "@/redux/features/landSlice";
 
 interface LandCellProps {
   landCell: LandCellData;
@@ -12,20 +16,34 @@ interface LandCellProps {
   houses?: number; // Số lượng nhà trên ô đất
 }
 
-const LandCell: React.FC<LandCellProps> = ({ landCell, houses = 0, users = [] }) => {
-  const maxIcons = 4; // Số lượng icon tối đa hiển thị
+const maxIcons = 4; // Số lượng icon tối đa hiển thị
+
+const LandCell: React.FC<LandCellProps> = ({
+  landCell,
+  houses = 0,
+  users = [],
+}) => {
+  const [isModalOpen, setIsModalOpen] = useState(false); // State để kiểm soát modal
   const extraUsers = users.length - maxIcons; // Số lượng người chơi còn lại
+
+  const handleCellClick = () => {
+    setIsModalOpen(true); // Mở modal khi click vào ô đất
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false); // Đóng modal khi nhấn "Đóng"
+  };
 
   const renderContent = () => {
     switch (landCell.type) {
       case "start":
-        return <StartCell/>;
+        return <StartCell />;
       case "jail":
-        return <JailCell/>;
+        return <JailCell />;
       case "goToJail":
-        return <GoJailCell/>;
+        return <GoJailCell />;
       case "parking":
-        return <ParkingCell/>;
+        return <ParkingCell />;
       default:
         return (
           <>
@@ -42,7 +60,9 @@ const LandCell: React.FC<LandCellProps> = ({ landCell, houses = 0, users = [] })
             {/* Tên ô đất và tiền */}
             <div className={styles.details}>
               <div className={styles.name}>{landCell.name}</div>
-              <div className={styles.price}>${landCell.price.toLocaleString()}</div>
+              <div className={styles.price}>
+                ${landCell.price.toLocaleString()}
+              </div>
             </div>
           </>
         );
@@ -50,21 +70,37 @@ const LandCell: React.FC<LandCellProps> = ({ landCell, houses = 0, users = [] })
   };
 
   return (
-    <div className={`${styles.cell} ${styles[landCell.color]}`}>
-      {renderContent()}
+    <>
+      <div
+        className={`${styles.cell} ${styles[landCell.color]}`}
+        onClick={handleCellClick}
+      >
+        {renderContent()}
 
-      {/* Hiển thị avatar của người chơi */}
-      <div className={styles.users}>
-        {users.slice(0, maxIcons).map((user, index) => (
-          <div key={user.id} className={styles.avatar} style={{ backgroundColor: user.color }}>
-            {user.avatar}
-          </div>
-        ))}
-        {extraUsers > 0 && (
-          <div className={styles.extraUsers}>+{extraUsers}</div>
-        )}
+        {/* Hiển thị avatar của người chơi */}
+        <div className={styles.users}>
+          {users.slice(0, maxIcons).map((user, index) => (
+            <div
+              key={user.id}
+              className={styles.avatar}
+              style={{ backgroundColor: user.color }}
+            >
+              {user.avatar}
+            </div>
+          ))}
+          {extraUsers > 0 && (
+            <div className={styles.extraUsers}>+{extraUsers}</div>
+          )}
+        </div>
       </div>
-    </div>
+      <LandInfoModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        landCellName={landCell.name}
+        landCellPrice={landCell.price}
+        landCellType={landCell.type || ""}
+      />
+    </>
   );
 };
 

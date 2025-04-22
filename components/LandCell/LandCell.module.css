@@ -18,6 +18,7 @@
   transition: all 0.3s ease;
   width: 100%;
   height: 100%;
+  cursor: pointer;
 }
 
 .cell:hover {
@@ -50,9 +51,12 @@
 .details {
   text-align: center;
   margin-top: 2px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  white-space: normal;      /* Cho phép xuống dòng */
+  overflow: visible;        /* Hiển thị nội dung tràn */
+  text-overflow: unset;     /* Không dùng ellipsis nữa */
+  word-wrap: break-word;    /* Tự động ngắt từ nếu dài */
+  line-height: 1.1;
+  font-size: 0.7rem;
 }
 
 .name {
