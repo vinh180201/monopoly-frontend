@@ -1,0 +1,18 @@
+.playerIcon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--player-color, #000); /* Màu sắc của người chơi */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #fff;
+}
+
+.playerIcon::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #fff; /* Màu bên trong */
+}

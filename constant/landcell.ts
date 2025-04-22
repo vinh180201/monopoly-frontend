@@ -36,8 +36,6 @@ export const bottomRowData: LandCellData[] = [
   { name: "Cơ Hội", price: 0, color: "blue" },
   { name: "Huế", price: 100, color: "lightblue" },
   { name: "Hải Phòng", price: 120, color: "lightblue" },
-
-
 ];
 
 // Cột trái (Left Column)
@@ -48,6 +46,12 @@ export const leftColData: LandCellData[] = [
   { name: "Đà Lạt", price: 160, color: "pink" },
   { name: "Nhà Ga Miền Đông", price: 200, color: "black" },
   { name: "Bãi Đậu Xe", price: 0, color: "green" },
+];
 
 
+export const cornerCells: LandCellData[] = [
+  { name: "Nhà Tù", price: 0, color: "white", type: "jail" },
+  { name: "Vào Tù", price: 0, color: "white", type: "goToJail" },
+  { name: "Bãi Đậu Xe", price: 0, color: "white", type: "parking" },
+  { name: "Bắt Đầu", price: 0, color: "white", type: "start" },
 ];
