@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import styles from "./DiceArea.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCurrentPlayer, rollDiceAndMove, nextPlayer } from "@/redux/features/playerSlice";
+import { selectCurrentPlayer, rollDiceAndMove } from "@/redux/features/playerSlice";
 
 const DiceArea: React.FC = () => {
   const dispatch = useDispatch();
@@ -11,7 +11,8 @@ const DiceArea: React.FC = () => {
   const [rolling, setRolling] = useState(false);
 
   const handleRollDice = () => {
-    if (rolling) return;
+    if (rolling || currentPlayer.turnLeft <= 0) return; // Chặn khi hết lượt
+
     setRolling(true);
 
     const roll = Math.floor(Math.random() * 6) + 1;
@@ -19,14 +20,17 @@ const DiceArea: React.FC = () => {
 
     setTimeout(() => {
       dispatch(rollDiceAndMove({ playerId: currentPlayer.id, steps: roll }));
-      // dispatch(nextPlayer());
       setRolling(false);
     }, 800); // Giả lập hiệu ứng xoay
   };
 
   return (
     <div className={styles.diceArea}>
-      <button className={styles.diceButton} onClick={handleRollDice}>
+      <button
+        className={styles.diceButton}
+        onClick={handleRollDice}
+        disabled={currentPlayer.turnLeft <= 0} // Disable button khi hết lượt
+      >
         {rolling ? "Rolling..." : "Roll Dice"}
       </button>
       {dice !== null && <div className={styles.diceResult}>🎲 {dice}</div>}

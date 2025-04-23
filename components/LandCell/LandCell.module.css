@@ -96,20 +96,25 @@
 
 .avatar:nth-child(1) {
   left: 0;
-  z-index: 3;
+  z-index: 4;
 }
 
 .avatar:nth-child(2) {
   left: 8px;
-  z-index: 2;
+  z-index: 3;
 }
 
 .avatar:nth-child(3) {
   left: 16px;
+  z-index: 2;
+}
+
+.avatar:nth-child(4) {
+  left: 24px;
   z-index: 1;
 }
 
-.extraUsers {
+/* .extraUsers {
   position: absolute;
   right: 0;
   width: 16px;
@@ -124,7 +129,7 @@
   font-weight: bold;
   border: 1px solid #000;
   z-index: 0;
-}
+} */
 
 .red {
   background-color: #f44336;

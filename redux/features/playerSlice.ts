@@ -23,14 +23,26 @@ const playerSlice = createSlice({
       const player = state.players.find((p) => p.id === playerId);
       if (player) {
         player.position = (player.position + steps) % (MAX_POSITION + 1);
+        if (player.turnLeft > 0) {
+          player.turnLeft -= 1;
+        }
       }
     },
     nextPlayer: (state) => {
-      state.currentPlayerIndex = (state.currentPlayerIndex + 1) % state.players.length;
+      // Xác định player kế tiếp
+      const nextIndex = (state.currentPlayerIndex + 1) % state.players.length;
+      const nextPlayer = state.players[nextIndex];
+
+      // Gán lượt đi mới cho player mới
+      nextPlayer.turnLeft = 1;
+
+      // Cập nhật chỉ số
+      state.currentPlayerIndex = nextIndex;
     },
     resetPositions: (state) => {
       state.players.forEach((player) => {
         player.position = 0;
+        player.turnLeft = 1; // Thiết lập lại lượt đi nếu cần
       });
     },
     updatePlayerMoney: (state, action: PayloadAction<{ playerId: number; amount: number }>) => {
