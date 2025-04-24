@@ -6,32 +6,33 @@ import JailCell from "../CornerCell/JailCell";
 import GoJailCell from "../CornerCell/GoJailCell";
 import ParkingCell from "../CornerCell/ParkingCell";
 import LandInfoModal from "../LandInfoModal/LandInfoModal";
-import { selectCurrentPlayer, updatePlayerMoney } from "@/redux/features/playerSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { addHouseToLand } from "@/redux/features/landSlice";
+import { selectPlayers } from "@/redux/features/playerSlice";
+import { useSelector } from "react-redux";
 
 interface LandCellProps {
   landCell: LandCellData;
-  users?: { id: number; avatar: string; color: string }[]; // Danh sách user đang ở trên ô đất
-  houses?: number; // Số lượng nhà trên ô đất
+  landingUsers?: { id: number; avatar: string; color: string }[];
 }
 
-const maxIcons = 4; // Số lượng icon tối đa hiển thị
+const maxIcons = 4;
 
-const LandCell: React.FC<LandCellProps> = ({
-  landCell,
-  houses = 0,
-  users = [],
-}) => {
-  const [isModalOpen, setIsModalOpen] = useState(false); // State để kiểm soát modal
-  const extraUsers = users.length - maxIcons; // Số lượng người chơi còn lại
+const LandCell: React.FC<LandCellProps> = ({ landCell, landingUsers = [] }) => {
+  const players = useSelector(selectPlayers);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const extraUsers = landingUsers.length - maxIcons;
+
+  const owner = landCell.owner
+    ? players.find((user) => user.id === landCell.owner)
+    : null;
+
+  const houses = landCell.houses || 0;
 
   const handleCellClick = () => {
-    setIsModalOpen(true); // Mở modal khi click vào ô đất
+    setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false); // Đóng modal khi nhấn "Đóng"
+    setIsModalOpen(false);
   };
 
   const renderContent = () => {
@@ -46,25 +47,12 @@ const LandCell: React.FC<LandCellProps> = ({
         return <ParkingCell />;
       default:
         return (
-          <>
-            {/* Biểu diễn màu đất và nhà */}
-            <div className={styles.landInfo}>
-              <div className={styles.colorBar}></div>
-              <div className={styles.houses}>
-                {Array.from({ length: houses }).map((_, index) => (
-                  <div key={index} className={styles.house}></div>
-                ))}
-              </div>
+          <div className={styles.details}>
+            <div className={styles.name}>{landCell.name}</div>
+            <div className={styles.price}>
+              ${landCell.price.toLocaleString()}
             </div>
-
-            {/* Tên ô đất và tiền */}
-            <div className={styles.details}>
-              <div className={styles.name}>{landCell.name}</div>
-              <div className={styles.price}>
-                ${landCell.price.toLocaleString()}
-              </div>
-            </div>
-          </>
+          </div>
         );
     }
   };
@@ -75,11 +63,24 @@ const LandCell: React.FC<LandCellProps> = ({
         className={`${styles.cell} ${styles[landCell.color]}`}
         onClick={handleCellClick}
       >
+      <div
+        className={styles.ownerBar}
+        style={{
+          backgroundColor: ["normal", "station", "utility"].includes(landCell.type)
+            ? owner?.color || "#7e7e7e"
+            : "transparent", // Không có màu nền nếu không phải ô đất có thể mua
+        }}
+      >
+        {["normal", "station", "utility"].includes(landCell.type) &&
+          Array.from({ length: houses }).map((_, index) => (
+            <div key={index} className={styles.house}></div>
+          ))}
+      </div>
+
         {renderContent()}
 
-        {/* Hiển thị avatar của người chơi */}
         <div className={styles.users}>
-          {users.slice(0, maxIcons).map((user, index) => (
+          {landingUsers.slice(0, maxIcons).map((user) => (
             <div
               key={user.id}
               className={styles.avatar}
@@ -93,6 +94,7 @@ const LandCell: React.FC<LandCellProps> = ({
           )}
         </div>
       </div>
+
       <LandInfoModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}

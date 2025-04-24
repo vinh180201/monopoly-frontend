@@ -9,7 +9,7 @@
   justify-content: space-between;
   align-items: center;
   background-color: #f9f9f9;
-  padding: 0.3em;
+  /* padding: 0.3em; */
   font-size: clamp(0.4rem, 0.8vw, 0.9rem);
   text-align: center;
   box-sizing: border-box;
@@ -25,22 +25,19 @@
   background-color: #e0e0e0;
 }
 
-.colorBar {
+.ownerBar {
   width: 100%;
-  height: 10px;
-  background-color: inherit;
-  border-bottom: 1px solid #000;
-}
-
-.houses {
+  min-height: 16px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 2px;
-  margin-top: 5px;
+  gap: 3px;
+  padding: 0 2px;
+  background-color: black;
+  /* border-bottom: 1px solid #000; */
 }
 
-.houses > div {
+.house {
   width: 10px;
   height: 10px;
   background-color: #ff9800;
@@ -51,10 +48,10 @@
 .details {
   text-align: center;
   margin-top: 2px;
-  white-space: normal;      /* Cho phép xuống dòng */
-  overflow: visible;        /* Hiển thị nội dung tràn */
-  text-overflow: unset;     /* Không dùng ellipsis nữa */
-  word-wrap: break-word;    /* Tự động ngắt từ nếu dài */
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  word-wrap: break-word;
   line-height: 1.1;
   font-size: 0.7rem;
 }
@@ -75,7 +72,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 2px;
+  /* margin-top: 2px; */
   width: 100%;
   height: 20px;
   overflow: hidden;
@@ -114,7 +111,7 @@
   z-index: 1;
 }
 
-/* .extraUsers {
+.extraUsers {
   position: absolute;
   right: 0;
   width: 16px;
@@ -129,59 +126,17 @@
   font-weight: bold;
   border: 1px solid #000;
   z-index: 0;
-} */
-
-.red {
-  background-color: #f44336;
-  color: white;
 }
 
-.blue {
-  background-color: #2196f3;
-  color: white;
-}
-
-.green {
-  background-color: #4caf50;
-  color: white;
-}
-
-.yellow {
-  background-color: #ffeb3b;
-  color: black;
-}
-
-.purple {
-  background-color: #9c27b0;
-  color: white;
-}
-
-.orange {
-  background-color: #ff9800;
-  color: white;
-}
-
-.lightblue {
-  background-color: #03a9f4;
-  color: white;
-}
-
-.pink {
-  background-color: #e91e63;
-  color: white;
-}
-
-.black {
-  background-color: #000000;
-  color: white;
-}
-
-.white {
-  background-color: #ffffff;
-  color: black;
-}
-
-.gray {
-  background-color: #9e9e9e;
-  color: white;
-}
+/* Màu sắc cho ô đất */
+.red { background-color: #f44336; color: white; }
+.blue { background-color: #2196f3; color: white; }
+.green { background-color: #4caf50; color: white; }
+.yellow { background-color: #ffeb3b; color: black; }
+.purple { background-color: #9c27b0; color: white; }
+.orange { background-color: #ff9800; color: white; }
+.lightblue { background-color: #03a9f4; color: white; }
+.pink { background-color: #e91e63; color: white; }
+.black { background-color: #000000; color: white; }
+.white { background-color: #ffffff; color: black; }
+.gray { background-color: #9e9e9e; color: white; }

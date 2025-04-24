@@ -9,6 +9,6 @@
   padding: 0.5em; /* Khoảng cách bên trong */
   box-sizing: border-box; /* Đảm bảo padding không ảnh hưởng đến kích thước */
   width: 100%; /* Chiều rộng đầy đủ */
-  height: 100%; /* Chiều cao đầy đủ */
+  height: 50%; /* Chiều cao đầy đủ */
   transition: all 0.3s ease; /* Hiệu ứng chuyển đổi */
 }

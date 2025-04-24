@@ -45,3 +45,19 @@
 .confirmButton:hover {
   background-color: #388e3c;
 }
+
+.playerInfo {
+  background-color: #f4f4f4;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.playerInfo h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.playerInfo p {
+  margin: 4px 0;
+}

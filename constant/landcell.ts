@@ -2,58 +2,58 @@ import { LandCellData } from "@/types/landCell";
 
 // Hàng trên cùng (Top Row)
 export const topRowData: LandCellData[] = [
-  { name: "Hà Nội", price: 220, color: "red", index: 1, housePrice: 50, houses: 0, owner: undefined },
-  { name: "Cơ Hội", price: 0, color: "blue", index: 2 },
-  { name: "Hải Dương", price: 220, color: "red", index: 3, housePrice: 50, houses: 0, owner: undefined },
-  { name: "Nam Định", price: 240, color: "red", index: 4, housePrice: 60, houses: 0, owner: undefined },
-  { name: "Nhà Ga Miền Tây", price: 200, color: "black", index: 5, housePrice: 100, houses: 0, owner: undefined },
-  { name: "Thái Bình", price: 260, color: "yellow", index: 6, housePrice: 75, houses: 0, owner: undefined },
-  { name: "Hưng Yên", price: 260, color: "yellow", index: 7, housePrice: 75, houses: 0, owner: undefined },
-  { name: "Nước Sạch", price: 150, color: "white", index: 8 },
-  { name: "Bắc Ninh", price: 280, color: "yellow", index: 9, housePrice: 80, houses: 0, owner: undefined },
-  { name: "Sài Gòn", price: 60, color: "purple", index: 10, housePrice: 30, houses: 0, owner: undefined },
+  { name: "Hà Nội", price: 220, color: "red", index: 0, housePrice: 50, houses: 0, owner: undefined, type: "normal" },
+  { name: "Cơ Hội", price: 0, color: "white", index: 0, type: "chance" },
+  { name: "Hải Dương", price: 220, color: "red", index: 0, housePrice: 50, houses: 0, owner: undefined, type: "normal" },
+  { name: "Nam Định", price: 240, color: "red", index: 0, housePrice: 60, houses: 0, owner: undefined, type: "normal" },
+  { name: "Nhà Ga Miền Tây", price: 200, color: "black", index: 0, housePrice: 100, houses: 0, owner: undefined, type: "station" },
+  { name: "Thái Bình", price: 260, color: "yellow", index: 0, housePrice: 75, houses: 0, owner: undefined, type: "normal" },
+  { name: "Vận khí", price: 0, color: "white", index: 0, type: "luck" },
+  { name: "Nước Sạch", price: 150, color: "white", index: 0, owner: undefined, type: "utility" },
+  { name: "Bắc Ninh", price: 280, color: "yellow", index: 0, housePrice: 80, houses: 0, owner: undefined, type: "normal" },
+  { name: "Hưng Yên", price: 260, color: "yellow", index: 0, housePrice: 75, houses: 0, owner: undefined, type: "normal" },
 ];
 
 // Cột phải (Right Column)
 export const rightColData: LandCellData[] = [
-  { name: "Phú Quốc", price: 300, color: "green", index: 11, housePrice: 100, houses: 0, owner: undefined },
-  { name: "Bạc Liêu", price: 300, color: "green", index: 12, housePrice: 100, houses: 0, owner: undefined },
-  { name: "Cơ Hội", price: 0, color: "blue", index: 13 },
-  { name: "Sơn La", price: 320, color: "green", index: 14, housePrice: 120, houses: 0, owner: undefined },
-  { name: "Nhà Ga Miền Bắc", price: 200, color: "black", index: 15, housePrice: 100, houses: 0, owner: undefined },
-  { name: "Điện Biên", price: 400, color: "blue", index: 16 },
+  { name: "Phú Quốc", price: 300, color: "green", index: 0, housePrice: 100, houses: 0, owner: undefined, type: "normal" },
+  { name: "Bạc Liêu", price: 300, color: "green", index: 0, housePrice: 100, houses: 0, owner: undefined, type: "normal" },
+  { name: "Cơ Hội", price: 0, color: "blue", index: 0, type: "chance" },
+  { name: "Sơn La", price: 320, color: "green", index: 0, housePrice: 120, houses: 0, owner: undefined, type: "normal" },
+  { name: "Nhà Ga Miền Bắc", price: 200, color: "black", index: 0, housePrice: 100, houses: 0, owner: undefined, type: "station" },
+  { name: "Điện Biên", price: 400, color: "blue", index: 0, type: "normal" },
 ];
 
 // Hàng dưới cùng (Bottom Row)
 export const bottomRowData: LandCellData[] = [
-  { name: "Sài Gòn", price: 60, color: "purple", index: 17, housePrice: 30, houses: 0, owner: undefined },
-  { name: "Sài Gòn", price: 60, color: "purple", index: 18, housePrice: 30, houses: 0, owner: undefined },
-  { name: "Cơ Hội", price: 0, color: "blue", index: 19 },
-  { name: "Nha Trang", price: 60, color: "purple", index: 20, housePrice: 30, houses: 0, owner: undefined },
-  { name: "Thuế Thu Nhập", price: -200, color: "red", index: 21 },
-  { name: "Nhà Ga Trung Tâm", price: 200, color: "black", index: 22, housePrice: 100, houses: 0, owner: undefined },
-  { name: "Vũng Tàu", price: 100, color: "lightblue", index: 23, housePrice: 50, houses: 0, owner: undefined },
-  { name: "Cơ Hội", price: 0, color: "blue", index: 24 },
-  { name: "Huế", price: 100, color: "lightblue", index: 25, housePrice: 50, houses: 0, owner: undefined },
-  { name: "Hải Phòng", price: 120, color: "lightblue", index: 26, housePrice: 60, houses: 0, owner: undefined },
+  { name: "Sài Gòn", price: 60, color: "purple", index: 0, housePrice: 30, houses: 0, owner: undefined, type: "normal" },
+  { name: "Sài Gòn", price: 60, color: "purple", index: 0, housePrice: 30, houses: 0, owner: undefined, type: "normal" },
+  { name: "Cơ Hội", price: 0, color: "blue", index: 0, type: "chance" },
+  { name: "Nha Trang", price: 60, color: "purple", index: 0, housePrice: 30, houses: 0, owner: undefined, type: "normal" },
+  { name: "Thuế Thu Nhập", price: -200, color: "red", index: 0, type: "tax" },
+  { name: "Nhà Ga Trung Tâm", price: 200, color: "black", index: 0, housePrice: 100, houses: 0, owner: undefined, type: "station" },
+  { name: "Vũng Tàu", price: 100, color: "lightblue", index: 0, housePrice: 50, houses: 0, owner: undefined, type: "normal" },
+  { name: "Cơ Hội", price: 0, color: "blue", index: 0, type: "chance" },
+  { name: "Huế", price: 100, color: "lightblue", index: 0, housePrice: 50, houses: 0, owner: undefined, type: "normal" },
+  { name: "Hải Phòng", price: 120, color: "lightblue", index: 0, housePrice: 60, houses: 0, owner: undefined, type: "normal" },
 ];
 
 // Cột trái (Left Column)
 export const leftColData: LandCellData[] = [
-  { name: "Buôn Mê Thuột", price: 140, color: "pink", index: 27, housePrice: 70, houses: 0, owner: undefined },
-  { name: "Điện Lực", price: 150, color: "white", index: 28 },
-  { name: "Cần Thơ", price: 140, color: "pink", index: 29, housePrice: 70, houses: 0, owner: undefined },
-  { name: "Đà Lạt", price: 160, color: "pink", index: 30, housePrice: 80, houses: 0, owner: undefined },
-  { name: "Nhà Ga Miền Đông", price: 200, color: "black", index: 31, housePrice: 100, houses: 0, owner: undefined },
-  { name: "Bãi Đậu Xe", price: 0, color: "green", index: 32 },
+  { name: "Buôn Mê Thuột", price: 140, color: "pink", index: 0, housePrice: 70, houses: 0, owner: undefined, type: "normal" },
+  { name: "Điện Lực", price: 150, color: "white", index: 0, type: "utility" },
+  { name: "Cần Thơ", price: 140, color: "pink", index: 0, housePrice: 70, houses: 0, owner: undefined, type: "normal" },
+  { name: "Đà Lạt", price: 160, color: "pink", index: 0, housePrice: 80, houses: 0, owner: undefined, type: "normal" },
+  { name: "Nhà Ga Miền Đông", price: 200, color: "black", index: 0, housePrice: 100, houses: 0, owner: undefined, type: "station" },
+  { name: "Bãi Đậu Xe", price: 0, color: "green", index: 0, type: "parking" },
 ];
 
 // Các ô góc (Corner Cells)
 export const cornerCells: LandCellData[] = [
-  { name: "Nhà Tù", price: 0, color: "white", type: "jail", index: 33 },
+  { name: "Nhà Tù", price: 0, color: "white", type: "jail", index: 0 },
   { name: "Bắt Đầu", price: 0, color: "white", type: "start", index: 0 },
-  { name: "Vào Tù", price: 0, color: "white", type: "goToJail", index: 34 },
-  { name: "Bãi Đậu Xe", price: 0, color: "white", type: "parking", index: 35 },
+  { name: "Vào Tù", price: 0, color: "white", type: "goToJail", index: 0 },
+  { name: "Bãi Đậu Xe", price: 0, color: "white", type: "parking", index: 0 },
 ];
 
 export const positionedCells = [

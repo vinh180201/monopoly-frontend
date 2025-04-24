@@ -10,10 +10,10 @@ import { initializeLands } from "@/redux/features/landSlice";
 export default function Home() {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    console.log(landCellData)
-    dispatch(initializeLands(landCellData));
-  }, [dispatch]);
+  // useEffect(() => {
+  //   console.log(landCellData)
+  //   dispatch(initializeLands(landCellData));
+  // }, [dispatch]);
 
   return (
     <MainLayout

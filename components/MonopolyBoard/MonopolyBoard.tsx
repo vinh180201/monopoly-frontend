@@ -16,9 +16,14 @@ import {
 import { selectPlayers } from "@/redux/features/playerSlice";
 import { useSelector } from "react-redux";
 import PlayerWatcher from "../PlayerWatcher/PlayerWatcher";
+import { selectLands } from "@/redux/features/landSlice";
 
 const MonopolyBoard: React.FC = () => {
   const players = useSelector(selectPlayers);
+
+  const lands = useSelector(selectLands);
+
+  console.log("Lands:", lands); // Log giá trị của lands từ Redux
 
   return (
     <>
@@ -26,6 +31,8 @@ const MonopolyBoard: React.FC = () => {
         <div className={styles.board}>
           {positionedCells.map((item, index) => {
             // console.log("Item:", item.cell.name, "Index:", index); // Log giá trị của item và index
+            const land = lands[index]; // lấy dữ liệu theo index tương ứng từ slice
+
             return (
               <div
                 key={index}
@@ -35,8 +42,8 @@ const MonopolyBoard: React.FC = () => {
                 }}
               >
                 <LandCell
-                  landCell={item.cell}
-                  users={players.filter((player) => player.position === index)}
+                  landCell={land} // truyền thông tin chi tiết từ Redux
+                  landingUsers={players.filter((player) => player.position === index)}
                 />
               </div>
             );

@@ -1,13 +1,15 @@
+// landSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { LandCellData } from "@/types/landCell";
-import { cornerCells, topRowData, rightColData, bottomRowData, leftColData } from "@/constant/landcell";
+import { RootState } from "../store";
+import { landCellData } from "@/constant/landcell";
 
 interface LandState {
   lands: LandCellData[];
 }
 
 const initialState: LandState = {
-  lands: [],
+  lands: landCellData,
 };
 
 const landSlice = createSlice({
@@ -15,7 +17,8 @@ const landSlice = createSlice({
   initialState,
   reducers: {
     initializeLands: (state, action: PayloadAction<LandCellData[]>) => {
-      state.lands = action.payload;    },
+      state.lands = action.payload;
+    },
     // Mua đất: cập nhật owner cho ô có index tương ứng
     setLandOwner: (state, action: PayloadAction<{ index: number; ownerId: number }>) => {
       const land = state.lands.find((l) => l.index === action.payload.index);
@@ -39,7 +42,12 @@ const landSlice = createSlice({
   },
 });
 
-export const {initializeLands, setLandOwner, addHouseToLand, setLands } = landSlice.actions;
+export const { initializeLands, setLandOwner, addHouseToLand, setLands } = landSlice.actions;
+
+export const selectLands = (state: RootState) => state.land.lands;
+
+export const selectLandsByOwner = (state: { land: LandState }, ownerId: number) =>
+  state.land.lands.filter((land) => land.owner === ownerId);
 
 // Selector: lấy ô đất theo index (position)
 export const selectLandByIndex = (state: { land: LandState }, index: number) =>
