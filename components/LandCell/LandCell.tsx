@@ -63,20 +63,26 @@ const LandCell: React.FC<LandCellProps> = ({ landCell, landingUsers = [] }) => {
         className={`${styles.cell} ${styles[landCell.color]}`}
         onClick={handleCellClick}
       >
-      <div
-        className={styles.ownerBar}
-        style={{
-          borderBottom: ["normal", "station", "utility"].includes(landCell.type) ? "1px solid #000" : "",
-          backgroundColor: ["normal", "station", "utility"].includes(landCell.type)
-            ? owner?.color || "#7e7e7e"
-            : "transparent", // Không có màu nền nếu không phải ô đất có thể mua
-        }}
-      >
-        {["normal", "station", "utility"].includes(landCell.type) &&
-          Array.from({ length: houses }).map((_, index) => (
-            <div key={index} className={styles.house}></div>
-          ))}
-      </div>
+        <div
+          className={styles.ownerBar}
+          style={{
+            borderBottom: ["normal", "station", "utility"].includes(
+              landCell.type
+            )
+              ? "1px solid #000"
+              : "",
+            backgroundColor: ["normal", "station", "utility"].includes(
+              landCell.type
+            )
+              ? owner?.color || "#7e7e7e"
+              : "transparent", // Không có màu nền nếu không phải ô đất có thể mua
+          }}
+        >
+          {["normal", "station", "utility"].includes(landCell.type) &&
+            Array.from({ length: houses }).map((_, index) => (
+              <div key={index} className={styles.house}></div>
+            ))}
+        </div>
 
         {renderContent()}
 
@@ -99,9 +105,7 @@ const LandCell: React.FC<LandCellProps> = ({ landCell, landingUsers = [] }) => {
       <LandInfoModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        landCellName={landCell.name}
-        landCellPrice={landCell.price}
-        landCellType={landCell.type || ""}
+        landCell={landCell}
       />
     </>
   );
