@@ -23,8 +23,6 @@ const MonopolyBoard: React.FC = () => {
 
   const lands = useSelector(selectLands);
 
-  console.log("Lands:", lands); // Log giá trị của lands từ Redux
-
   return (
     <>
       <div className={styles.boardWrapper}>

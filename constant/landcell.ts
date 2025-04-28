@@ -156,7 +156,7 @@ export const bottomRowData: LandCellData[] = [
     index: 0,
     name: "Quảng Nam",
     price: 80,
-    color: "gray",
+    color: "teal",
     type: "normal",
     housePrice: 80,
     fees: {level0: 40, level1: 100, level2: 160, level3: 240, level4: 300, hotel: 420 },
@@ -166,7 +166,7 @@ export const bottomRowData: LandCellData[] = [
     index: 0,
     name: "Bình Thuận",
     price: 60,
-    color: "gray",
+    color: "teal",
     type: "normal",
     housePrice: 80,
     fees: {level0: 40, level1: 100, level2: 170, level3: 230, level4: 280, hotel: 400 },
@@ -326,7 +326,7 @@ export const positionedCells = [
   ...rightColData.map((cell, idx) => ({ cell, row: idx + 2, col: 12 })), // pos 34–43
 ];
 
-export const landCellData = positionedCells.map((item, idx) => ({
+export const landCellData: LandCellData[] = positionedCells.map((item, idx) => ({
   index: idx, // Đặt index dựa vào thứ tự trong positionedCells
   name: item.cell.name,
   price: item.cell.price,
@@ -335,4 +335,6 @@ export const landCellData = positionedCells.map((item, idx) => ({
   owner: undefined, // Không có chủ sở hữu ban đầu
   housePrice: item.cell.housePrice || 0, // Mặc định không có nhà
   houses: item.cell.houses || 0, // Mặc định không có nhà
+  fees: item.cell.fees || { level0: 0, level1: 0, level2: 0, level3: 0, level4: 0, hotel: 0 }, // Mặc định không có phí
+  sellPrices: item.cell.sellPrices || { land: 0, house: 0 }, // Mặc định giá bán là 0
 }));

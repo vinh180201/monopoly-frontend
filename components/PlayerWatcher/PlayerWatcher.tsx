@@ -44,11 +44,43 @@ const PlayerWatcher = () => {
         }
 
         // Kiểm tra nếu ô đất có thể mua được (type: "normal" | "station" | "utility")
-        if (["normal", "station", "utility"].includes(land.type)) {
-          // Kiểm tra nếu ô đất chưa có chủ sở hữu
-          if (land.owner === undefined) {
-            console.log(`👣 Player ${currentPlayer.id} vừa đến ô đất trống: "${land.name}" (index: ${land.index})`);
+        // if (["normal", "station", "utility"].includes(land.type)) {
+        //   // Kiểm tra nếu ô đất chưa có chủ sở hữu
+        //   if (land.owner === undefined) {
+        //     console.log(`👣 Player ${currentPlayer.id} vừa đến ô đất trống: "${land.name}" (index: ${land.index})`);
 
+        //     // Kiểm tra nếu người chơi đủ tiền để mua đất
+        //     if (currentPlayer.money >= land.price) {
+        //       setLandToBuy(land); // Lưu lại thông tin ô đất
+        //       setShowModal(true); // Hiển thị modal mua đất
+        //     } else {
+        //       console.log("Không đủ tiền để mua đất.");
+        //     }
+        //   } else {
+        //     console.log(`👣 Player ${currentPlayer.id} đến ô đất: "${land.name}" (index: ${land.index}) và đã có chủ.`);
+        //   }
+        // } else {
+        //   console.log(`👣 Player ${currentPlayer.id} đến ô không thể mua: "${land.name}" (type: ${land.type}).`);
+        // }
+        if (["normal", "station", "utility"].includes(land.type)) {
+          // Kiểm tra nếu ô đất đã có chủ sở hữu
+          if (land.owner !== undefined && land.owner !== currentPlayer.id) {
+            const levelKey = `level${land.houses || 0}` as keyof typeof land.fees; // Chuyển key thành kiểu hợp lệ
+            const rent = land.fees?.[levelKey] || 0; // Tính tiền thuê dựa trên cấp độ
+            console.log(
+              `👣 Player ${currentPlayer.id} đi vào ô đất của Player ${land.owner}. Trả tiền thuê: $${rent}.`
+            );
+        
+            // Trừ tiền người chơi hiện tại
+            dispatch(updatePlayerMoney({ playerId: currentPlayer.id, amount: -rent }));
+        
+            // Cộng tiền cho chủ sở hữu
+            dispatch(updatePlayerMoney({ playerId: land.owner, amount: rent }));
+          } else if (land.owner === undefined) {
+            console.log(
+              `👣 Player ${currentPlayer.id} vừa đến ô đất trống: "${land.name}" (index: ${land.index})`
+            );
+        
             // Kiểm tra nếu người chơi đủ tiền để mua đất
             if (currentPlayer.money >= land.price) {
               setLandToBuy(land); // Lưu lại thông tin ô đất
@@ -57,10 +89,10 @@ const PlayerWatcher = () => {
               console.log("Không đủ tiền để mua đất.");
             }
           } else {
-            console.log(`👣 Player ${currentPlayer.id} đến ô đất: "${land.name}" (index: ${land.index}) và đã có chủ.`);
+            console.log(
+              `👣 Player ${currentPlayer.id} đến ô đất của chính mình: "${land.name}".`
+            );
           }
-        } else {
-          console.log(`👣 Player ${currentPlayer.id} đến ô không thể mua: "${land.name}" (type: ${land.type}).`);
         }
       }
     };
@@ -69,15 +101,6 @@ const PlayerWatcher = () => {
       logPlayerMove(); // Log sau khi player di chuyển
     }
   }, [currentPlayer.position, land]);
-
-  useEffect(() => {
-    if (currentPlayer.turnLeft <= 0) {
-      console.log(`⏩ Player ${currentPlayer.id} không đủ lượt để chơi. Chuyển sang người chơi tiếp theo.`);
-      dispatch(nextPlayer()); // Chuyển sang người chơi tiếp theo
-    } else {
-      console.log(`✅ Player ${currentPlayer.id} có lượt hợp lệ. Cho phép chơi.`);
-    }
-  }, [currentPlayer, dispatch]);
 
   // Xử lý khi người chơi đồng ý mua đất
   const handleBuyLand = () => {

@@ -45,7 +45,7 @@ const playerSlice = createSlice({
       const nextPlayer = state.players[nextIndex];
 
       // Gán lượt đi mới cho player mới
-      nextPlayer.turnLeft += 1;
+      nextPlayer.turnLeft = 1;
 
       // Cập nhật chỉ số
       state.currentPlayerIndex = nextIndex;

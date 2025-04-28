@@ -36,6 +36,9 @@
   background-color: black;
   /* border-bottom: 1px solid #000; */
 }
+.purchasable {
+  border-bottom: 1px solid #000;
+}
 
 .house {
   width: 10px;

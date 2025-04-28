@@ -66,6 +66,7 @@ const LandCell: React.FC<LandCellProps> = ({ landCell, landingUsers = [] }) => {
       <div
         className={styles.ownerBar}
         style={{
+          borderBottom: ["normal", "station", "utility"].includes(landCell.type) ? "1px solid #000" : "",
           backgroundColor: ["normal", "station", "utility"].includes(landCell.type)
             ? owner?.color || "#7e7e7e"
             : "transparent", // Không có màu nền nếu không phải ô đất có thể mua
