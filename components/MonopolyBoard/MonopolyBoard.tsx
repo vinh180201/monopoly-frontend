@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import styles from "./MonopolyBoard.module.css";
 import LandCell from "../LandCell/LandCell";
 import ChanceCard from "../ChanceCard/ChanceCard";
@@ -17,11 +17,35 @@ import { selectPlayers } from "@/redux/features/playerSlice";
 import { useSelector } from "react-redux";
 import PlayerWatcher from "../PlayerWatcher/PlayerWatcher";
 import { selectLands } from "@/redux/features/landSlice";
+import QuestionBox from "../QuestionBox/QuestionBox";
 
 const MonopolyBoard: React.FC = () => {
   const players = useSelector(selectPlayers);
-
   const lands = useSelector(selectLands);
+
+  const [question, setQuestion] = useState<string | null>(null);
+  const [onConfirm, setOnConfirm] = useState<(() => void) | null>(null);
+  const [onCancel, setOnCancel] = useState<(() => void) | null>(null);
+
+  const handleQuestion = (
+    questionText: string,
+    confirmAction: () => void,
+    cancelAction: () => void
+  ) => {
+    setQuestion(questionText);
+    setOnConfirm(() => confirmAction);
+    setOnCancel(() => cancelAction);
+  };
+
+  const handleConfirm = () => {
+    if (onConfirm) onConfirm();
+    setQuestion(null);
+  };
+
+  const handleCancel = () => {
+    if (onCancel) onCancel();
+    setQuestion(null);
+  };
 
   return (
     <>
@@ -52,19 +76,29 @@ const MonopolyBoard: React.FC = () => {
             className={styles.centerArea}
             style={{ gridColumn: "2 / 12", gridRow: "2 / 8" }}
           >
-            <div className={styles.chanceCard}>
-              <ChanceCard />
-            </div>
-            <div className={styles.diceArea}>
-              <DiceArea />
-            </div>
-            <div className={styles.communityChest}>
-              <CommunityChestCard />
-            </div>
+            {question ? (
+              <QuestionBox
+                question={question}
+                onConfirm={handleConfirm}
+                onCancel={handleCancel}
+              />
+            ) : (
+              <>
+                <div className={styles.chanceCard}>
+                  <ChanceCard />
+                </div>
+                <div className={styles.diceArea}>
+                  <DiceArea />
+                </div>
+                <div className={styles.communityChest}>
+                  <CommunityChestCard />
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
-      <PlayerWatcher />
+      <PlayerWatcher onQuestion={handleQuestion}/>
     </>
   );
 };
