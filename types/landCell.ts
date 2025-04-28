@@ -3,10 +3,22 @@ export interface LandCellData {
   name: string;
   price: number;
   color: string;
-  type: "start" | "jail" | "goToJail" | "parking" | "normal" | "chance" | "luck" | "utility" | "station" | "tax"; // Loại cell
-  owner?: number; // ID của người chơi sở hữu ô đất (nếu có)
-  housePrice?: number; // Giá mua nhà trên ô đất
-  houses?: number; // Số lượng nhà trên ô đất
+  type: "start" | "jail" | "goToJail" | "parking" | "normal" | "chance" | "luck" | "utility" | "station" | "tax";
+  owner?: number;
+  housePrice?: number;
+  houses?: number;
+  fees?: {
+    level0: number;
+    level1: number;
+    level2: number;
+    level3: number;
+    level4: number;
+    hotel: number;
+  };
+  sellPrices?: {
+    land: number;
+    house: number;
+  };
 }
 
 export interface PositionedCell {
