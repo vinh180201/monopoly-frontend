@@ -65,14 +65,16 @@ const MonopolyBoard: React.FC = () => {
               >
                 <LandCell
                   landCell={land} // truyền thông tin chi tiết từ Redux
-                  landingUsers={players.filter((player) => player.position === index)}
+                  landingUsers={players.filter(
+                    (player) => player.position === index
+                  )}
                 />
               </div>
             );
           })}
 
           {/* Trung tâm bàn cờ */}
-          <div
+          {/* <div
             className={styles.centerArea}
             style={{ gridColumn: "2 / 12", gridRow: "2 / 8" }}
           >
@@ -95,10 +97,34 @@ const MonopolyBoard: React.FC = () => {
                 </div>
               </>
             )}
+          </div> */}
+          <div
+            className={styles.centerArea}
+            style={{ gridColumn: "2 / 12", gridRow: "2 / 8" }}
+          >
+            {question ? (
+              <QuestionBox
+                question={question}
+                onConfirm={handleConfirm}
+                onCancel={handleCancel}
+              />
+            ) : (
+              <div className={styles.centerContent}>
+                <div className={styles.chanceCard}>
+                  <ChanceCard />
+                </div>
+                <div className={styles.diceArea}>
+                  <DiceArea />
+                </div>
+                <div className={styles.communityChest}>
+                  <CommunityChestCard />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
-      <PlayerWatcher onQuestion={handleQuestion}/>
+      <PlayerWatcher onQuestion={handleQuestion} />
     </>
   );
 };

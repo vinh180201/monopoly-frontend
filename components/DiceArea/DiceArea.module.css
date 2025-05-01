@@ -1,26 +1,41 @@
 .diceArea {
-  text-align: center;
-  margin-top: 1rem;
-}
-
-.diceButton {
-  padding: 10px 20px;
-  font-size: 18px;
-  background-color: #2196f3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  background-color: #4caf50;
   color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: transform 0.3s ease;
+  font-size: 1.2rem;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.diceButton:disabled {
-  opacity: 0.6;
+.rollButton {
+  background-color: #ffffff;
+  color: #4caf50;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.rollButton:hover {
+  background-color: #f1f1f1;
+}
+
+.rollButton:disabled {
+  background-color: #cccccc;
+  color: #666666;
   cursor: not-allowed;
 }
 
 .diceResult {
-  margin-top: 1rem;
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: bold;
 }

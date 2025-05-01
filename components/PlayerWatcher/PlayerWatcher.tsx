@@ -14,6 +14,7 @@ import {
 } from "@/redux/features/landSlice";
 import { RootState } from "@/redux/store";
 import { LandCellData } from "@/types/landCell";
+import { selectGameState, setBought } from "@/redux/features/gameSlice";
 
 const PlayerWatcher = ({
   onQuestion,
@@ -29,8 +30,7 @@ const PlayerWatcher = ({
   const land = useSelector((state: RootState) =>
     selectLandByIndex(state, currentPlayer.position)
   );
-  const [lastVisitedLand, setLastVisitedLand] = useState<number | null>(null); // Theo dõi ô đất cuối cùng người chơi ghé thăm
-  const [hasBoughtLand, setHasBoughtLand] = useState(false); // Theo dõi trạng thái mua đất trong lượt hiện tại
+  const gameState = useSelector(selectGameState)
 
   useEffect(() => {
     const logPlayerMove = async () => {
@@ -88,9 +88,9 @@ const PlayerWatcher = ({
               updatePlayerMoney({ playerId: currentPlayer.id, amount: -rent })
             );
             dispatch(updatePlayerMoney({ playerId: land.owner, amount: rent }));
-          } else if (land.owner === undefined && !hasBoughtLand) {
+          } else if (land.owner === undefined) {
             // Hỏi mua đất nếu chưa mua đất trong lượt này
-            if (currentPlayer.money >= land.price) {
+            if (currentPlayer.money >= land.price && !gameState.hasBought && gameState.hasRolledDice) {
               onQuestion(
                 `Bạn có muốn mua ô đất "${land.name}" với giá $${land.price}?`,
                 () => {
@@ -106,7 +106,6 @@ const PlayerWatcher = ({
                   console.log(
                     `🏠 Player ${currentPlayer.id} đã mua ô đất "${land.name}".`
                   );
-                  setHasBoughtLand(true); // Đánh dấu đã mua đất trong lượt này
                 },
                 () => {
                   console.log(
@@ -114,14 +113,11 @@ const PlayerWatcher = ({
                   );
                 }
               );
+              dispatch(setBought())
             } else {
               console.log("Không đủ tiền để mua đất.");
             }
-          } else if (
-            land.owner === currentPlayer.id &&
-            !hasBoughtLand && // Không hỏi mua nhà nếu vừa mua đất
-            lastVisitedLand !== land.index // Chỉ hỏi mua nhà khi quay lại ô đất
-          ) {
+          } else if (land.owner === currentPlayer.id && !gameState.hasBought && gameState.hasRolledDice) {
             // Kiểm tra nếu người chơi có thể mua nhà
             if ((land.houses ?? 0) < 5 && currentPlayer.money >= (land.housePrice ?? 0)) {
               onQuestion(
@@ -139,15 +135,14 @@ const PlayerWatcher = ({
                       land.houses ?? 0 + 1
                     } trên ô đất "${land.name}".`
                   );
-                  setLastVisitedLand(land.index); // Cập nhật ô đất cuối cùng đã ghé thăm
                 },
                 () => {
                   console.log(
                     `🏠 Player ${currentPlayer.id} đã từ chối mua nhà trên ô đất "${land.name}".`
                   );
-                  setLastVisitedLand(land.index); // Cập nhật ô đất cuối cùng đã ghé thăm
                 }
               );
+              dispatch(setBought())
             }
           }
         }
@@ -157,12 +152,7 @@ const PlayerWatcher = ({
     if (land) {
       logPlayerMove();
     }
-  }, [currentPlayer.position, land, dispatch, lastVisitedLand, hasBoughtLand]);
-
-  // Reset trạng thái khi bắt đầu lượt mới
-  useEffect(() => {
-    setHasBoughtLand(false);
-  }, [currentPlayer.id]);
+  }, [currentPlayer.position, land, dispatch]);
 
   return null;
 };

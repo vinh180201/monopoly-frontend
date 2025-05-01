@@ -71,52 +71,47 @@
 
 /* Khu vực trung tâm */
 .centerArea {
-  grid-row: 2 / span 6;
-  grid-column: 2 / span 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.centerContent {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
-  background-color: rgba(255, 255, 255, 0.8);
-  border-radius: 8px;
-  box-sizing: border-box;
-  position: relative; /* Để định vị các phần tử con bên trong */
+  gap: 20px;
 }
 
-.avatarPathWrapper {
-  position: absolute;
-  inset: 0; /* Đường đi chiếm toàn bộ không gian của centerArea */
+.chanceCard,
+.communityChest,
+.diceArea {
+  width: 120px;
+  height: 120px;
   display: flex;
   justify-content: center;
   align-items: center;
-  pointer-events: none; /* Ngăn người dùng tương tác với đường đi */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #f9f9f9;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: bold;
 }
 
-/* Thẻ Cơ Hội */
 .chanceCard {
-  width: 12%;
-  aspect-ratio: 1 / 1;
-  background-color: #f9c74f;
-  border: 2px solid #333;
-  border-radius: 8px;
+  background-color: #ffeb3b;
+  color: #333;
 }
 
-/* Vị trí của xúc sắc */
-.diceArea {
-  width: 12%;
-  aspect-ratio: 1 / 1;
-  background-color: #90be6d;
-  border: 2px solid #333;
-  border-radius: 8px;
-}
-
-/* Thẻ Vận Khí */
 .communityChest {
-  width: 12%;
-  aspect-ratio: 1 / 1;
-  background-color: #f94144;
-  border: 2px solid #333;
-  border-radius: 8px;
+  background-color: #03a9f4;
+  color: white;
+}
+
+.diceArea {
+  background-color: #4caf50;
+  color: white;
 }
 
