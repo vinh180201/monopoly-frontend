@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import styles from "./DiceArea.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCurrentPlayer, rollDiceAndMove } from "@/redux/features/playerSlice";
-import { rollDice } from "@/redux/features/gameSlice"; // Import action rollDice
+import { selectCurrentPlayer, movePlayerStepByStep } from "@/redux/features/playerSlice";
+import { rollDice, setMoving } from "@/redux/features/gameSlice"; // Import action rollDice
+import { AppDispatch } from "@/redux/store"; // Import AppDispatch
 
 const DiceArea: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch(); // Sử dụng AppDispatch
   const currentPlayer = useSelector(selectCurrentPlayer);
   const [dice, setDice] = useState<number | null>(null);
   const [rolling, setRolling] = useState(false);
@@ -20,7 +21,7 @@ const DiceArea: React.FC = () => {
 
     setTimeout(() => {
       dispatch(rollDice()); // Cập nhật trạng thái hasRolledDice trong Redux
-      dispatch(rollDiceAndMove({ playerId: currentPlayer.id, steps: roll }));
+      dispatch(movePlayerStepByStep(currentPlayer.id, roll)); // Di chuyển từng bước
       setRolling(false);
     }, 800);
   };

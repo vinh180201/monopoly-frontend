@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectCurrentPlayer,
@@ -13,7 +13,6 @@ import {
   addHouseToLand,
 } from "@/redux/features/landSlice";
 import { RootState } from "@/redux/store";
-import { LandCellData } from "@/types/landCell";
 import { selectGameState, setBought } from "@/redux/features/gameSlice";
 
 const PlayerWatcher = ({
@@ -30,9 +29,12 @@ const PlayerWatcher = ({
   const land = useSelector((state: RootState) =>
     selectLandByIndex(state, currentPlayer.position)
   );
-  const gameState = useSelector(selectGameState)
+  const gameState = useSelector(selectGameState);
 
   useEffect(() => {
+    // Chỉ thực hiện logic khi isMoving là false
+    if (gameState.isMoving) return;
+
     const logPlayerMove = async () => {
       if (land) {
         console.log(
@@ -90,7 +92,11 @@ const PlayerWatcher = ({
             dispatch(updatePlayerMoney({ playerId: land.owner, amount: rent }));
           } else if (land.owner === undefined) {
             // Hỏi mua đất nếu chưa mua đất trong lượt này
-            if (currentPlayer.money >= land.price && !gameState.hasBought && gameState.hasRolledDice) {
+            if (
+              currentPlayer.money >= land.price &&
+              !gameState.hasBought &&
+              gameState.hasRolledDice
+            ) {
               onQuestion(
                 `Bạn có muốn mua ô đất "${land.name}" với giá $${land.price}?`,
                 () => {
@@ -113,13 +119,20 @@ const PlayerWatcher = ({
                   );
                 }
               );
-              dispatch(setBought())
+              dispatch(setBought());
             } else {
               console.log("Không đủ tiền để mua đất.");
             }
-          } else if (land.owner === currentPlayer.id && !gameState.hasBought && gameState.hasRolledDice) {
+          } else if (
+            land.owner === currentPlayer.id &&
+            !gameState.hasBought &&
+            gameState.hasRolledDice
+          ) {
             // Kiểm tra nếu người chơi có thể mua nhà
-            if ((land.houses ?? 0) < 5 && currentPlayer.money >= (land.housePrice ?? 0)) {
+            if (
+              (land.houses ?? 0) < 5 &&
+              currentPlayer.money >= (land.housePrice ?? 0)
+            ) {
               onQuestion(
                 `Bạn có muốn mua nhà cấp ${land.houses ?? 0 + 1} trên ô đất "${land.name}" với giá $${land.housePrice}?`,
                 () => {
@@ -142,7 +155,7 @@ const PlayerWatcher = ({
                   );
                 }
               );
-              dispatch(setBought())
+              dispatch(setBought());
             }
           }
         }
@@ -152,7 +165,7 @@ const PlayerWatcher = ({
     if (land) {
       logPlayerMove();
     }
-  }, [currentPlayer.position, land, dispatch]);
+  }, [currentPlayer.position, land, gameState.isMoving, dispatch]);
 
   return null;
 };

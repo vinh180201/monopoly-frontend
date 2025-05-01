@@ -74,30 +74,6 @@ const MonopolyBoard: React.FC = () => {
           })}
 
           {/* Trung tâm bàn cờ */}
-          {/* <div
-            className={styles.centerArea}
-            style={{ gridColumn: "2 / 12", gridRow: "2 / 8" }}
-          >
-            {question ? (
-              <QuestionBox
-                question={question}
-                onConfirm={handleConfirm}
-                onCancel={handleCancel}
-              />
-            ) : (
-              <>
-                <div className={styles.chanceCard}>
-                  <ChanceCard />
-                </div>
-                <div className={styles.diceArea}>
-                  <DiceArea />
-                </div>
-                <div className={styles.communityChest}>
-                  <CommunityChestCard />
-                </div>
-              </>
-            )}
-          </div> */}
           <div
             className={styles.centerArea}
             style={{ gridColumn: "2 / 12", gridRow: "2 / 8" }}

@@ -3,6 +3,7 @@ import { Player } from "@/types/player";
 import { RootState } from "../store";
 import { MAX_POSITION } from "@/constant/common";
 import { initPlayers } from "@/constant/player";
+import { AppThunk } from "../store";
 
 const initialState: { players: Player[], currentPlayerIndex: number } = {
   players: initPlayers,
@@ -18,27 +19,20 @@ const playerSlice = createSlice({
   name: "players",
   initialState,
   reducers: {
-    rollDiceAndMove: (state, action: PayloadAction<MovePayload>) => {
-      const { playerId, steps } = action.payload;
-      const player = state.players.find((p) => p.id === playerId);
-    
+    rollDiceAndMove: (state, action: PayloadAction<{ playerId: number; position: number }>) => {
+      const player = state.players.find((p) => p.id === action.payload.playerId);
       if (player) {
-        const oldPosition = player.position;
-        const newPosition = (oldPosition + steps) % (MAX_POSITION + 1);
-    
-        // Nếu vượt quá MAX_POSITION thì nghĩa là đi qua ô Start
-        if (oldPosition + steps > MAX_POSITION) {
-          player.money += 200; // 💰 Cộng tiền khi đi qua Start
-          console.log(`💰 Player ${playerId} đi qua ô Start, cộng $200`);
-        }
-    
+        const newPosition = action.payload.position % (MAX_POSITION + 1); // Đảm bảo không vượt quá MAX_POSITION
         player.position = newPosition;
-    
-        if (player.turnLeft > 0) {
-          player.turnLeft -= 1;
+
+        // Nếu đi qua ô Start
+        if (newPosition < player.position) {
+          player.money += 200; // 💰 Cộng tiền khi đi qua Start
+          console.log(`💰 Player ${player.id} đi qua ô Start, cộng $200`);
         }
+        console.log(`🚩 Player ${player.id} được chuyển đến vị trí ${newPosition}`);
       }
-    },    
+    },  
     nextPlayer: (state) => {
       // Xác định player kế tiếp
       const nextIndex = (state.currentPlayerIndex + 1) % state.players.length;
@@ -82,6 +76,37 @@ const playerSlice = createSlice({
 export const selectPlayers = (state: RootState) => state.players.players;
 export const selectCurrentPlayer = (state: RootState) =>
   state.players.players[state.players.currentPlayerIndex];
+
+import { setMoving } from "@/redux/features/gameSlice"; // Import setMoving
+
+export const movePlayerStepByStep =
+  (playerId: number, steps: number): AppThunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+    const player = state.players.players.find((p) => p.id === playerId);
+
+    if (!player) return;
+
+    // Bắt đầu di chuyển: set isMoving = true
+    dispatch(setMoving({ isMoving: true }));
+
+    let currentStep = 0;
+    const interval = setInterval(() => {
+      if (currentStep < steps) {
+        const newPosition = (player.position + currentStep + 1) % (MAX_POSITION + 1);
+        dispatch(rollDiceAndMove({ playerId, position: newPosition }));
+        currentStep++;
+      } else {
+        clearInterval(interval);
+
+        // Kết thúc di chuyển: set isMoving = false
+        dispatch(setMoving({ isMoving: false }));
+
+        // Giảm turnLeft của người chơi
+        dispatch(skipPlayerTurn({ playerId, turns: 1 }));
+      }
+    }, 300); // 300ms mỗi bước
+  };
 
 export const {
   rollDiceAndMove,
