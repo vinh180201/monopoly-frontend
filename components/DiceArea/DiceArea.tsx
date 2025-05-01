@@ -17,6 +17,7 @@ const DiceArea: React.FC = () => {
     setRolling(true);
 
     const roll = Math.floor(Math.random() * 12) + 1;
+    // const roll = 0;
     setDice(roll);
 
     setTimeout(() => {

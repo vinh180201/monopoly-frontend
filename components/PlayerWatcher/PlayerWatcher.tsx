@@ -131,7 +131,8 @@ const PlayerWatcher = ({
             // Kiểm tra nếu người chơi có thể mua nhà
             if (
               (land.houses ?? 0) < 5 &&
-              currentPlayer.money >= (land.housePrice ?? 0)
+              currentPlayer.money >= (land.housePrice ?? 0) &&
+               land.type === "normal"
             ) {
               onQuestion(
                 `Bạn có muốn mua nhà cấp ${land.houses ?? 0 + 1} trên ô đất "${land.name}" với giá $${land.housePrice}?`,
