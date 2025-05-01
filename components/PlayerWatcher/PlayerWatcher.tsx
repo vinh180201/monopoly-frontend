@@ -166,7 +166,7 @@ const PlayerWatcher = ({
     if (land) {
       logPlayerMove();
     }
-  }, [currentPlayer.position, land, gameState.isMoving, dispatch]);
+  }, [currentPlayer, gameState, land, gameState.isMoving, dispatch, onQuestion]);
 
   return null;
 };

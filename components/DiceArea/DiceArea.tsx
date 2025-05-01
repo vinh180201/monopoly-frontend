@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./DiceArea.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentPlayer, movePlayerStepByStep } from "@/redux/features/playerSlice";
-import { rollDice, setMoving } from "@/redux/features/gameSlice"; // Import action rollDice
+import { rollDice } from "@/redux/features/gameSlice"; // Import action rollDice
 import { AppDispatch } from "@/redux/store"; // Import AppDispatch
 
 const DiceArea: React.FC = () => {

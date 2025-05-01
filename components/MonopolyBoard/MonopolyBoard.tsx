@@ -1,16 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import styles from "./MonopolyBoard.module.css";
 import LandCell from "../LandCell/LandCell";
 import ChanceCard from "../ChanceCard/ChanceCard";
 import CommunityChestCard from "../CommunityChestCard/CommunityChestCard";
 import DiceArea from "../DiceArea/DiceArea";
 import {
-  bottomRowData,
-  leftColData,
-  rightColData,
-  topRowData,
-  cornerCells,
   positionedCells,
 } from "@/constant/landcell";
 import { selectPlayers } from "@/redux/features/playerSlice";
@@ -27,15 +22,18 @@ const MonopolyBoard: React.FC = () => {
   const [onConfirm, setOnConfirm] = useState<(() => void) | null>(null);
   const [onCancel, setOnCancel] = useState<(() => void) | null>(null);
 
-  const handleQuestion = (
-    questionText: string,
-    confirmAction: () => void,
-    cancelAction: () => void
-  ) => {
-    setQuestion(questionText);
-    setOnConfirm(() => confirmAction);
-    setOnCancel(() => cancelAction);
-  };
+  const handleQuestion = useCallback(
+    (
+      questionText: string,
+      confirmAction: () => void,
+      cancelAction: () => void
+    ) => {
+      setQuestion(questionText);
+      setOnConfirm(() => confirmAction);
+      setOnCancel(() => cancelAction);
+    },
+    []
+  );
 
   const handleConfirm = () => {
     if (onConfirm) onConfirm();
@@ -76,7 +74,7 @@ const MonopolyBoard: React.FC = () => {
           {/* Trung tâm bàn cờ */}
           <div
             className={styles.centerArea}
-            style={{ gridColumn: "2 / 12", gridRow: "2 / 8" }}
+            style={{ gridColumn: "2 / 13", gridRow: "2 / 9" }}
           >
             {question ? (
               <QuestionBox

@@ -7,19 +7,21 @@
   align-items: center; /* Căn giữa theo chiều dọc */
   padding: 0;
   box-sizing: border-box;
-  overflow: hidden; /* Ngăn nội dung tràn ra ngoài */
-  padding: 20px;
+  /* overflow: hidden; */
+  padding: 10px;
   overflow: auto;
 }
 
 .board {
   display: grid;
-  grid-template-rows: repeat(8, 1fr); /* 8 hàng */
-  grid-template-columns: repeat(12, minmax(40px, 1fr)); /* 12 cột với chiều rộng tối thiểu là 40px */
+  grid-template-rows: repeat(9, 1fr); /* 8 hàng */
+  grid-template-columns: repeat(13, minmax(40px, 1fr)); /* 12 cột với chiều rộng tối thiểu là 40px */
   width: 100%;
   max-width: 100%;
   min-width: 780px;
   height: auto;
+  max-height: 100%; 
+  max-width: 100%; 
   gap: 2px; /* Giảm khoảng cách giữa các ô */
   box-sizing: border-box;
 }
