@@ -5,9 +5,7 @@ import LandCell from "../LandCell/LandCell";
 import ChanceCard from "../ChanceCard/ChanceCard";
 import CommunityChestCard from "../CommunityChestCard/CommunityChestCard";
 import DiceArea from "../DiceArea/DiceArea";
-import {
-  positionedCells,
-} from "@/constant/landcell";
+import { positionedCells } from "@/constant/landcell";
 import { selectPlayers } from "@/redux/features/playerSlice";
 import { useSelector } from "react-redux";
 import PlayerWatcher from "../PlayerWatcher/PlayerWatcher";
@@ -26,11 +24,24 @@ const MonopolyBoard: React.FC = () => {
     (
       questionText: string,
       confirmAction: () => void,
-      cancelAction: () => void
+      cancelAction: () => void,
+      autoDismiss: boolean = false
     ) => {
       setQuestion(questionText);
-      setOnConfirm(() => confirmAction);
-      setOnCancel(() => cancelAction);
+      if (!autoDismiss) {
+        setOnConfirm(() => () => {
+          confirmAction();
+          setQuestion(null); // Đặt lại câu hỏi sau khi xác nhận
+        });
+        setOnCancel(() => () => {
+          cancelAction();
+          setQuestion(null); // Đặt lại câu hỏi sau khi hủy
+        });
+      } else {
+        setOnConfirm(null);
+        setOnCancel(null);
+        setTimeout(() => setQuestion(null), 1500); // Tự động xóa câu hỏi sau 1.5 giây nếu autoDismiss
+      }
     },
     []
   );
@@ -79,8 +90,9 @@ const MonopolyBoard: React.FC = () => {
             {question ? (
               <QuestionBox
                 question={question}
-                onConfirm={handleConfirm}
-                onCancel={handleCancel}
+                onConfirm={onConfirm || (() => {})}
+                onCancel={onCancel || (() => {})}
+                autoDismiss={!onConfirm && !onCancel} // Nếu không có nút, thì là autoDismiss
               />
             ) : (
               <div className={styles.centerContent}>

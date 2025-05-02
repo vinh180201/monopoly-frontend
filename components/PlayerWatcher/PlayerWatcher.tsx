@@ -6,6 +6,7 @@ import {
   updatePlayerMoney,
   updatePlayerPosition,
   skipPlayerTurn,
+  nextPlayer,
 } from "@/redux/features/playerSlice";
 import {
   selectLandByIndex,
@@ -13,7 +14,7 @@ import {
   addHouseToLand,
 } from "@/redux/features/landSlice";
 import { RootState } from "@/redux/store";
-import { selectGameState, setBought } from "@/redux/features/gameSlice";
+import { resetTurn, selectGameState, setBought } from "@/redux/features/gameSlice";
 
 const PlayerWatcher = ({
   onQuestion,
@@ -21,7 +22,8 @@ const PlayerWatcher = ({
   onQuestion: (
     question: string,
     confirmAction: () => void,
-    cancelAction: () => void
+    cancelAction: () => void,
+    autoDismiss?: boolean
   ) => void;
 }) => {
   const dispatch = useDispatch();
@@ -44,10 +46,13 @@ const PlayerWatcher = ({
         // Xử lý các loại ô đặc biệt
         switch (land.type) {
           case "tax":
-            console.log(`👣 Player ${currentPlayer.id} đi qua ô thuế. Trừ $200.`);
+            console.log(
+              `👣 Player ${currentPlayer.id} đi qua ô thuế. Trừ $200.`
+            );
             dispatch(
               updatePlayerMoney({ playerId: currentPlayer.id, amount: -200 })
             );
+            handleNextTurn();
             break;
 
           case "chance":
@@ -57,6 +62,7 @@ const PlayerWatcher = ({
             dispatch(
               updatePlayerMoney({ playerId: currentPlayer.id, amount: 30 })
             );
+            handleNextTurn();
             break;
 
           case "goToJail":
@@ -66,12 +72,50 @@ const PlayerWatcher = ({
             dispatch(
               updatePlayerPosition({
                 playerId: currentPlayer.id,
-                position: 11,
+                position: 12,
               })
             );
             dispatch(skipPlayerTurn({ playerId: currentPlayer.id, turns: 1 }));
-            break;
+            // Hiển thị thông báo khi vào ô "Nhà Tù"
+            onQuestion(
+              `👮 Player ${currentPlayer.id} đã vào ô "Nhà Tù".`,
+              () => {}, // Không cần hành động xác nhận
+              () => {}, // Không cần hành động hủy
+              true
+            );
 
+            // Tự động ẩn thông báo sau 1 giây
+            setTimeout(() => {
+              onQuestion(
+                "",
+                () => {},
+                () => {}
+              );
+              handleNextTurn();
+            }, 1500);
+            break;
+          case "jail": 
+            onQuestion(
+              `Player ${currentPlayer.id} vừa đi qua ô "Nhà Tù".`,
+              () => {}, // Không cần hành động xác nhận
+              () => {}, // Không cần hành động hủy
+              true
+            );
+
+            // Tự động ẩn thông báo sau 1 giây
+            setTimeout(() => {
+              onQuestion(
+                "",
+                () => {},
+                () => {}
+              );
+              handleNextTurn();
+            }, 1500);
+            console.log(
+              `👣 Player ${currentPlayer.id} chỉ đi qua ô "Nhà Tù". Không có hành động nào được thực hiện.`
+            );
+            // Không làm gì nếu chỉ đi qua ô "Nhà Tù"
+            break;
           default:
             break;
         }
@@ -80,7 +124,9 @@ const PlayerWatcher = ({
         if (["normal", "station", "utility"].includes(land.type)) {
           if (land.owner !== undefined && land.owner !== currentPlayer.id) {
             // Trả tiền thuê
-            const levelKey = `level${land.houses || 0}` as keyof typeof land.fees;
+            const levelKey = `level${
+              land.houses || 0
+            }` as keyof typeof land.fees;
             const rent = land.fees?.[levelKey] || 0;
             console.log(
               `👣 Player ${currentPlayer.id} đi vào ô đất của Player ${land.owner}. Trả tiền thuê: $${rent}.`
@@ -107,21 +153,27 @@ const PlayerWatcher = ({
                     })
                   );
                   dispatch(
-                    setLandOwner({ index: land.index, ownerId: currentPlayer.id })
+                    setLandOwner({
+                      index: land.index,
+                      ownerId: currentPlayer.id,
+                    })
                   );
                   console.log(
                     `🏠 Player ${currentPlayer.id} đã mua ô đất "${land.name}".`
                   );
+                  handleNextTurn();
                 },
                 () => {
                   console.log(
                     `🏠 Player ${currentPlayer.id} đã từ chối mua ô đất "${land.name}".`
                   );
+                  handleNextTurn();
                 }
               );
-              dispatch(setBought());
+              // dispatch(setBought());
             } else {
               console.log("Không đủ tiền để mua đất.");
+              handleNextTurn();
             }
           } else if (
             land.owner === currentPlayer.id &&
@@ -132,10 +184,12 @@ const PlayerWatcher = ({
             if (
               (land.houses ?? 0) < 5 &&
               currentPlayer.money >= (land.housePrice ?? 0) &&
-               land.type === "normal"
+              land.type === "normal"
             ) {
               onQuestion(
-                `Bạn có muốn mua nhà cấp ${land.houses ?? 0 + 1} trên ô đất "${land.name}" với giá $${land.housePrice}?`,
+                `Bạn có muốn mua nhà cấp ${land.houses ?? 0 + 1} trên ô đất "${
+                  land.name
+                }" với giá $${land.housePrice}?`,
                 () => {
                   dispatch(
                     updatePlayerMoney({
@@ -149,14 +203,16 @@ const PlayerWatcher = ({
                       land.houses ?? 0 + 1
                     } trên ô đất "${land.name}".`
                   );
+                  handleNextTurn();
                 },
                 () => {
                   console.log(
                     `🏠 Player ${currentPlayer.id} đã từ chối mua nhà trên ô đất "${land.name}".`
                   );
+                  handleNextTurn();
                 }
               );
-              dispatch(setBought());
+              // dispatch(setBought());
             }
           }
         }
@@ -166,7 +222,19 @@ const PlayerWatcher = ({
     if (land) {
       logPlayerMove();
     }
-  }, [currentPlayer, gameState, land, gameState.isMoving, dispatch, onQuestion]);
+  }, [
+    currentPlayer,
+    gameState,
+    land,
+    gameState.isMoving,
+    dispatch,
+    onQuestion,
+  ]);
+
+  const handleNextTurn = () => {
+    dispatch(nextPlayer());
+    dispatch(resetTurn())
+  };
 
   return null;
 };

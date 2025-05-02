@@ -1,10 +1,9 @@
 import React, { useMemo } from "react";
 import styles from "./MainLayout.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { nextPlayer, selectCurrentPlayer, selectPlayers } from "@/redux/features/playerSlice";
+import { selectCurrentPlayer, selectPlayers } from "@/redux/features/playerSlice";
 import { selectLandsByOwner } from "@/redux/features/landSlice"; // Selector để lấy các đất sở hữu
-import { RootState, store } from "@/redux/store";
-import { resetTurn } from "@/redux/features/gameSlice";
+import { store } from "@/redux/store";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -26,13 +25,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, sidebar }) => {
     });
   }, [allPlayers]);
 
-  // Disable button if current player has remaining turns
-  const isButtonDisabled = currentPlayer.turnLeft > 0;
-
-  const handleNextTurn = () => {
-    dispatch(nextPlayer());
-    dispatch(resetTurn())
-  };
 
   return (
     <div className={styles.appContainer}>
@@ -57,16 +49,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, sidebar }) => {
               <p>Số đất sở hữu: {player.ownedLands.length}</p>
             </div>
           ))}
-        </div>
-  
-        <div className={styles.confirmButtonContainer}>
-          <button
-            onClick={handleNextTurn}
-            className={styles.confirmButton}
-            disabled={isButtonDisabled} // Disable if turnLeft > 0
-          >
-            ✅ Xác nhận đã đi xong
-          </button>
         </div>
       </aside>
     </div>

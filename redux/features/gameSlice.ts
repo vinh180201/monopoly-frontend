@@ -2,9 +2,9 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
 interface GameState {
-  hasRolledDice: boolean; // Trạng thái đã quay xúc xắc
-  hasBought: boolean; // Trạng thái đã mua đất
-  isMoving: boolean; // Trạng thái đang di chuyển
+  hasRolledDice: boolean; 
+  hasBought: boolean; 
+  isMoving: boolean;
 }
 
 const initialState: GameState = {
