@@ -11,6 +11,7 @@ export const bottomRowData: LandCellData[] = [
     fees: {level0: 40, level1: 100, level2: 160, level3: 240, level4: 300, hotel: 420 },
     sellPrices: { land: 60, house: 40 },
   },
+  { index: 0, name: "Cơ Hội", price: 0, color: "white", type: "chance" },
   {
     index: 0,
     name: "Bình Thuận",
@@ -32,7 +33,6 @@ export const bottomRowData: LandCellData[] = [
     fees: {level0: 60, level1: 120, level2: 200, level3: 300, level4: 400, hotel: 500 },
     sellPrices: { land: 100, house: 60 },
   },
-  { index: 0, name: "Cơ Hội", price: 0, color: "white", type: "chance" },
   {
     index: 0,
     name: "Ga Miền Nam",
@@ -86,7 +86,7 @@ export const bottomRowData: LandCellData[] = [
   {
     name: "Đồng Nai",
     price: 180,
-    color: "yellow",
+    color: "pink",
     type: "normal",
     index: 0,
     housePrice: 90,

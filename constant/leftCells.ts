@@ -4,7 +4,7 @@ export const leftColData: LandCellData[] = [
   {
     name: "Buôn Mê Thuột",
     price: 140,
-    color: "pink",
+    color: "yellow",
     type: "normal",
     index: 0,
     housePrice: 70,
@@ -63,7 +63,7 @@ export const leftColData: LandCellData[] = [
   {
     name: "Hải Dương",
     price: 200,
-    color: "yellow",
+    color: "red",
     type: "normal",
     index: 0,
     housePrice: 100,
@@ -73,7 +73,7 @@ export const leftColData: LandCellData[] = [
   {
     name: "Đắk Lắk",
     price: 200,
-    color: "pink",
+    color: "red",
     type: "normal",
     index: 0,
     housePrice: 100,
