@@ -3,11 +3,10 @@ export interface Player {
   name: string;
   avatar: string;
   color: string;
-  position: number; // từ 0–35
-  money: number; // Số tiền hiện tại của người chơi
-  properties: number[]; // Danh sách các ô đất mà người chơi sở hữu (theo index)
-  turnLeft: number; // Số lượt còn lại để đi
-  isBot: boolean; // true nếu là bot, false nếu là người chơi thực sự
-  turnSkip: number; // Số lượt bị bỏ qua liên tiếp
-  isInJail: boolean; // true nếu đang ở tù, false nếu không
+  position: number;
+  money: number; 
+  properties: number[];
+  turnLeft: number;
+  isBot: boolean;
+  turnInJail: number; 
 }

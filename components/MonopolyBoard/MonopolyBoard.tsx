@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styles from "./MonopolyBoard.module.css";
 import LandCell from "../LandCell/LandCell";
 import ChanceCard from "../ChanceCard/ChanceCard";
@@ -11,50 +11,18 @@ import { useSelector } from "react-redux";
 import PlayerWatcher from "../PlayerWatcher/PlayerWatcher";
 import { selectLands } from "@/redux/features/landSlice";
 import QuestionBox from "../QuestionBox/QuestionBox";
+import { useQuestionQueue } from "@/hooks/useQuestionQueue";
+import { useGlobalQuestion } from "@/provider/QuestionContext";
 
 const MonopolyBoard: React.FC = () => {
   const players = useSelector(selectPlayers);
   const lands = useSelector(selectLands);
 
-  const [question, setQuestion] = useState<string | null>(null);
-  const [onConfirm, setOnConfirm] = useState<(() => void) | null>(null);
-  const [onCancel, setOnCancel] = useState<(() => void) | null>(null);
-
-  const handleQuestion = useCallback(
-    (
-      questionText: string,
-      confirmAction: () => void,
-      cancelAction: () => void,
-      autoDismiss: boolean = false
-    ) => {
-      setQuestion(questionText);
-      if (!autoDismiss) {
-        setOnConfirm(() => () => {
-          confirmAction();
-          setQuestion(null); // Đặt lại câu hỏi sau khi xác nhận
-        });
-        setOnCancel(() => () => {
-          cancelAction();
-          setQuestion(null); // Đặt lại câu hỏi sau khi hủy
-        });
-      } else {
-        setOnConfirm(null);
-        setOnCancel(null);
-        setTimeout(() => setQuestion(null), 1500); // Tự động xóa câu hỏi sau 1.5 giây nếu autoDismiss
-      }
-    },
-    []
-  );
-
-  const handleConfirm = () => {
-    if (onConfirm) onConfirm();
-    setQuestion(null);
-  };
-
-  const handleCancel = () => {
-    if (onCancel) onCancel();
-    setQuestion(null);
-  };
+  const { question, confirm, cancel, isAutoDismiss } = useGlobalQuestion();  
+  
+  useEffect(() => {
+    console.log("🟢 Question đã được cập nhật:", question);
+  }, [question]);
 
   return (
     <>
@@ -90,9 +58,9 @@ const MonopolyBoard: React.FC = () => {
             {question ? (
               <QuestionBox
                 question={question}
-                onConfirm={onConfirm || (() => {})}
-                onCancel={onCancel || (() => {})}
-                autoDismiss={!onConfirm && !onCancel} // Nếu không có nút, thì là autoDismiss
+                onConfirm={confirm || (() => {})}
+                onCancel={cancel || (() => {})}
+                autoDismiss={isAutoDismiss} // Nếu không có nút, thì là autoDismiss
               />
             ) : (
               <div className={styles.centerContent}>
@@ -110,7 +78,7 @@ const MonopolyBoard: React.FC = () => {
           </div>
         </div>
       </div>
-      <PlayerWatcher onQuestion={handleQuestion} />
+      <PlayerWatcher />
     </>
   );
 };

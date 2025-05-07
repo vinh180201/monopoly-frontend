@@ -3,12 +3,14 @@ import { RootState } from "../store";
 
 interface GameState {
   hasRolledDice: boolean; 
+  rollDouble: boolean;
   hasBought: boolean; 
   isMoving: boolean;
 }
 
 const initialState: GameState = {
   hasRolledDice: false,
+  rollDouble: false,
   hasBought: false,
   isMoving: false,
 };
@@ -17,8 +19,8 @@ const gameSlice = createSlice({
   name: "game",
   initialState,
   reducers: {
-    rollDice(state) {
-      state.hasRolledDice = true;
+    rollDice(state, action: PayloadAction<{ hasRolledDice: boolean }>) {
+      state.hasRolledDice = action.payload.hasRolledDice;
     },
     setMoving(state, action: PayloadAction<{ isMoving: boolean }>) {
       state.isMoving = action.payload.isMoving;
@@ -30,6 +32,9 @@ const gameSlice = createSlice({
     setBought(state) {
       state.hasBought = true;
     },
+    setDoubleDice(state, action: PayloadAction<{ rollDouble: boolean }>) {
+      state.rollDouble = action.payload.rollDouble;
+    },
   },
 });
 
@@ -40,6 +45,7 @@ export const {
   resetTurn,
   setBought,
   setMoving,
+  setDoubleDice,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

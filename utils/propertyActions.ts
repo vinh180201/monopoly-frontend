@@ -103,14 +103,14 @@ export const handlePayRent = (
   // Hiển thị thông báo
   onQuestion(
     `👣 Player ${currentPlayer.id} đã đi vào ô đất của Player ${land.owner} và phải trả tiền thuê $${rent}.`,
-    () => {},
-    () => {},
+    () => {handleNextTurn()},
+    () => {handleNextTurn()},
     true
   );
 
   // Chuyển lượt sau khi xử lý xong
-  setTimeout(() => {
-    onQuestion("", () => {}, () => {});
-    handleNextTurn();
-  }, 1500);
+  // setTimeout(() => {
+  //   onQuestion("", () => {}, () => {});
+  //   handleNextTurn();
+  // }, 1500);
 };

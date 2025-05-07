@@ -102,8 +102,8 @@ export const movePlayerStepByStep =
         // Kết thúc di chuyển: set isMoving = false
         dispatch(setMoving({ isMoving: false }));
 
-        // Giảm turnLeft của người chơi
-        dispatch(skipPlayerTurn({ playerId, turns: 1 }));
+        // // Giảm turnLeft của người chơi
+        // dispatch(skipPlayerTurn({ playerId, turns: 1 }));
       }
     }, 300); // 300ms mỗi bước
   };

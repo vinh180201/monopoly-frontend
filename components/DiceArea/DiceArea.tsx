@@ -1,28 +1,45 @@
 import React, { useState } from "react";
 import styles from "./DiceArea.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCurrentPlayer, movePlayerStepByStep } from "@/redux/features/playerSlice";
-import { rollDice } from "@/redux/features/gameSlice"; // Import action rollDice
+import { selectCurrentPlayer, movePlayerStepByStep, skipPlayerTurn } from "@/redux/features/playerSlice";
+import { rollDice, selectGameState, setDoubleDice } from "@/redux/features/gameSlice"; // Import action rollDice
 import { AppDispatch } from "@/redux/store"; // Import AppDispatch
 
 const DiceArea: React.FC = () => {
-  const dispatch: AppDispatch = useDispatch(); // Sử dụng AppDispatch
+  const dispatch: AppDispatch = useDispatch();
   const currentPlayer = useSelector(selectCurrentPlayer);
-  const [dice, setDice] = useState<number | null>(null);
+  const gameState = useSelector(selectGameState); // Lấy trạng thái gameState
+  const [dice1, setDice1] = useState<number | null>(null);
+  const [dice2, setDice2] = useState<number | null>(null);
   const [rolling, setRolling] = useState(false);
 
   const handleRollDice = () => {
-    if (rolling || currentPlayer.turnLeft <= 0) return;
+    if (rolling || currentPlayer.turnLeft <= 0 || gameState.hasRolledDice) return;
 
     setRolling(true);
 
-    // const roll = Math.floor(Math.random() * 12) + 1;
-    const roll = 0;
-    setDice(roll);
+    // Tung 2 xúc xắc
+    // const roll1 = Math.floor(Math.random() * 6) + 1;
+    // const roll2 = Math.floor(Math.random() * 6) + 1;
+    const roll1 = 19;
+    const roll2 = 19;
+    const total = roll1 + roll2;
+
+    setDice1(roll1);
+    setDice2(roll2);
 
     setTimeout(() => {
-      dispatch(rollDice()); // Cập nhật trạng thái hasRolledDice trong Redux
-      dispatch(movePlayerStepByStep(currentPlayer.id, roll)); // Di chuyển từng bước
+      dispatch(rollDice({hasRolledDice: true})); // Cập nhật trạng thái hasRolledDice trong Redux
+      dispatch(movePlayerStepByStep(currentPlayer.id, total)); // Di chuyển từng bước
+
+      // Nếu 2 xúc xắc giống nhau, thêm 1 lượt
+      if (roll1 === roll2) {
+        dispatch(setDoubleDice({ rollDouble: true }));
+        console.log(`🎉 Double dice! Player ${currentPlayer.id} được thêm 1 lượt.`);
+      } else {
+        dispatch(skipPlayerTurn({ playerId: currentPlayer.id, turns: 1 })); // Giảm lượt nếu không phải double
+      }
+
       setRolling(false);
     }, 800);
   };
@@ -32,11 +49,15 @@ const DiceArea: React.FC = () => {
       <button
         className={styles.rollButton}
         onClick={handleRollDice}
-        disabled={rolling}
+        disabled={rolling || gameState.hasRolledDice} // Không cho phép roll nếu đã roll
       >
         {rolling ? "Rolling..." : "Roll Dice"}
       </button>
-      {dice !== null && <div className={styles.diceResult}>🎲 {dice}</div>}
+      {dice1 !== null && dice2 !== null && (
+        <div className={styles.diceResult}>
+          🎲 Dice 1: {dice1}, Dice 2: {dice2} (Total: {dice1 + dice2})
+        </div>
+      )}
     </div>
   );
 };
