@@ -19,10 +19,6 @@ const MonopolyBoard: React.FC = () => {
   const lands = useSelector(selectLands);
 
   const { question, confirm, cancel, isAutoDismiss } = useGlobalQuestion();  
-  
-  useEffect(() => {
-    console.log("🟢 Question đã được cập nhật:", question);
-  }, [question]);
 
   return (
     <>

@@ -1,2 +1,2 @@
-export const MAX_POSITION = 35;
+export const MAX_POSITION = 39;
  

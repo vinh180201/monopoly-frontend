@@ -1,41 +1,54 @@
 .diceArea {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-  background-color: #4caf50;
-  color: white;
+  gap: 1rem;
+  padding: 2rem;
   font-size: 1.2rem;
   font-weight: bold;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .rollButton {
-  background-color: #ffffff;
-  color: #4caf50;
+  background: white;
+  color: #388e3c;
   border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-size: 1rem;
-  font-weight: bold;
+  padding: 12px 28px;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  font-weight: 600;
   cursor: pointer;
-  margin-bottom: 10px;
+  transition: background 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .rollButton:hover {
-  background-color: #f1f1f1;
+  background-color: #e0f2f1;
 }
 
 .rollButton:disabled {
-  background-color: #cccccc;
-  color: #666666;
+  background-color: #eeeeee;
+  color: #9e9e9e;
   cursor: not-allowed;
 }
 
 .diceResult {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
   font-size: 1.5rem;
   font-weight: bold;
+}
+
+.dice {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  background-color: white;
+  color: #388e3c;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
 }
