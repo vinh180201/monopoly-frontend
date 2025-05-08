@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Player } from "@/types/player";
 import { RootState } from "../store";
-import { MAX_POSITION } from "@/constant/common";
+import { MAX_POSITION, MOVE_STEP_TIME } from "@/constant/common";
 import { initPlayers } from "@/constant/player";
 import { AppThunk } from "../store";
+import { setMoving } from "./gameSlice";
 
 const initialState: { players: Player[], currentPlayerIndex: number } = {
   players: initPlayers,
@@ -22,14 +23,16 @@ const playerSlice = createSlice({
     rollDiceAndMove: (state, action: PayloadAction<{ playerId: number; position: number }>) => {
       const player = state.players.find((p) => p.id === action.payload.playerId);
       if (player) {
-        const newPosition = action.payload.position % (MAX_POSITION + 1); // Đảm bảo không vượt quá MAX_POSITION
-        player.position = newPosition;
+        const prevPosition = player.position; // lưu vị trí cũ
+        const newPosition = action.payload.position % (MAX_POSITION + 1);
 
-        // Nếu đi qua ô Start
-        if (newPosition < player.position) {
-          player.money += 200; // 💰 Cộng tiền khi đi qua Start
+        // ✅ kiểm tra trước khi gán
+        if (newPosition < prevPosition) {
+          player.money += 200;
           console.log(`💰 Player ${player.id} đi qua ô Start, cộng $200`);
         }
+
+        player.position = newPosition; // sau cùng mới gán
         console.log(`🚩 Player ${player.id} được chuyển đến vị trí ${newPosition}`);
       }
     },  
@@ -70,14 +73,37 @@ const playerSlice = createSlice({
         console.log(`⏸️ Player ${player.id} bị mất ${action.payload.turns} lượt, còn lại: ${player.turnLeft}`);
       }
     },
+    sendPlayerToJail: (state, action: PayloadAction<{ playerId: number; turnsInJail?: number }>) => {
+      const player = state.players.find((p) => p.id === action.payload.playerId);
+      if (player) {
+        player.position = 12;
+        player.turnInJail = action.payload.turnsInJail ?? 3; // mặc định là 3 lượt nếu không truyền vào
+        player.turnLeft = 0; // mất lượt luôn nếu cần
+        console.log(`🚓 Player ${player.id} đã bị bắt vào tù trong ${player.turnInJail} lượt.`);
+      }
+    },
+    releaseFromJail: (state, action: PayloadAction<{ playerId: number }>) => {
+      const player = state.players.find(
+        (p) => p.id === action.payload.playerId
+      );
+      if (player) {
+        player.turnInJail = 0; // 🎉 Thả ra
+      }
+    },
+    decreaseJailTurn: (state, action: PayloadAction<{ playerId: number }>) => {
+      const player = state.players.find(
+        (p) => p.id === action.payload.playerId
+      );
+      if (player && player.turnInJail > 0) {
+        player.turnInJail -= 1;
+      }
+    }
   },
 });
 
 export const selectPlayers = (state: RootState) => state.players.players;
 export const selectCurrentPlayer = (state: RootState) =>
   state.players.players[state.players.currentPlayerIndex];
-
-import { setMoving } from "@/redux/features/gameSlice"; // Import setMoving
 
 export const movePlayerStepByStep =
   (playerId: number, steps: number): AppThunk =>
@@ -105,7 +131,7 @@ export const movePlayerStepByStep =
         // // Giảm turnLeft của người chơi
         // dispatch(skipPlayerTurn({ playerId, turns: 1 }));
       }
-    }, 300); // 300ms mỗi bước
+    }, MOVE_STEP_TIME); // 300ms mỗi bước
   };
 
 export const {
@@ -115,6 +141,9 @@ export const {
   addPropertyToPlayer,
   updatePlayerPosition,
   skipPlayerTurn,
+  sendPlayerToJail,
+  releaseFromJail,
+  decreaseJailTurn
 } = playerSlice.actions;
 
 export default playerSlice.reducer;

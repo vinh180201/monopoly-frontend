@@ -77,6 +77,8 @@ export const handleBuyHouse = (
         handleNextTurn();
       }
     );
+  } else {
+    handleNextTurn();
   }
 };
 

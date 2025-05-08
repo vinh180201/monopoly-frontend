@@ -1,5 +1,5 @@
 import { Dispatch } from "redux";
-import { updatePlayerMoney, updatePlayerPosition } from "@/redux/features/playerSlice";
+import { sendPlayerToJail, updatePlayerMoney, updatePlayerPosition } from "@/redux/features/playerSlice";
 import { setLandOwner, addHouseToLand } from "@/redux/features/landSlice";
 import { Player } from "@/types/player";
 import { setDoubleDice } from "@/redux/features/gameSlice";
@@ -13,11 +13,6 @@ export const handleTax = (dispatch: Dispatch, currentPlayer: any, onQuestion: an
     () => {handleNextTurn();},
     true
   );
-
-  // setTimeout(() => {
-  //   onQuestion("", () => {}, () => {});
-  //   handleNextTurn();
-  // }, 1500);
 };
 
 export const handleChance = (dispatch: Dispatch, currentPlayer: any, onQuestion: any, handleNextTurn: any) => {
@@ -29,29 +24,19 @@ export const handleChance = (dispatch: Dispatch, currentPlayer: any, onQuestion:
     () => {handleNextTurn();},
     true
   );
-
-  // setTimeout(() => {
-  //   onQuestion("", () => {}, () => {});
-  //   handleNextTurn();
-  // }, 1500);
 };
 
 export const handleGoToJail = (dispatch: Dispatch, currentPlayer: any, onQuestion: any, handleNextTurn: any) => {
   console.log(
     `👣 Player ${currentPlayer.id} đi vào ô "Vào Tù". Chuyển đến ô "Nhà Tù" và mất 1 lượt.`
   );
-  dispatch(updatePlayerPosition({ playerId: currentPlayer.id, position: 12 }));
+  dispatch(sendPlayerToJail({ playerId: currentPlayer.id }));
   onQuestion(
     `👮 Player ${currentPlayer.id} đã vào ô "Nhà Tù".`,
-    () => {handleNextTurn();},
-    () => {handleNextTurn();},
+    () => {},
+    () => {},
     true
   );
-
-  // setTimeout(() => {
-  //   onQuestion("", () => {}, () => {});
-  //   handleNextTurn();
-  // }, 1500);
 };
 
 export const handleVisitJail = (
@@ -61,6 +46,17 @@ export const handleVisitJail = (
   onQuestion: any,
   handleNextTurn: any
 ) => {
+  if (currentPlayer.turnInJail > 0) {
+    console.log(`🚫 Player ${currentPlayer.id} đang ở tù.`);
+    onQuestion(
+      `🚫 Bạn đang ở tù.`,
+      () => handleNextTurn(),
+      () => handleNextTurn(),
+      true
+    );
+    return;
+  }
+
   // Lọc danh sách người chơi đang ở tù (ngoại trừ người chơi hiện tại)
   const playersInJail = players.filter(
     (player) => player.turnInJail && player.id !== currentPlayer.id
@@ -95,10 +91,26 @@ export const handleVisitJail = (
       true
     );
   }
+};
 
-  // Chuyển lượt sau khi xử lý xong
-  // setTimeout(() => {
-  //   onQuestion("", () => {}, () => {});
-  //   handleNextTurn();
-  // }, 1500);
+export const checkPassStart = (
+  dispatch: Dispatch,
+  currentPlayer: Player,
+  prevPosition: number,
+  newPosition: number,
+  onQuestion: any
+) => {
+  // Giả định bàn cờ có 40 ô, index từ 0 -> 39
+  // Nếu newPosition < prevPosition => đã đi qua ô Start
+  if (newPosition < prevPosition) {
+    dispatch(updatePlayerMoney({ playerId: currentPlayer.id, amount: 200 }));
+    console.log(`💰 Player ${currentPlayer.id} đã đi qua ô Start, cộng $200.`);
+
+    onQuestion(
+      `💰 Player ${currentPlayer.id} đã đi qua ô Start và nhận $200.`,
+      () => {},
+      () => {},
+      true
+    );
+  }
 };
